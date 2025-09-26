@@ -671,100 +671,179 @@ const DateSelector: React.FC<{
           setShowModal(true);
         }}
         style={{
-          backgroundColor: theme.colors.surfaceElevated,
+          backgroundColor: '#ffffff',
           paddingHorizontal: theme.spacing.lg,
-          paddingVertical: theme.spacing.sm,
-          borderRadius: theme.borderRadius.full,
-          marginBottom: theme.spacing.sm,
+          paddingVertical: theme.spacing.md,
+          borderRadius: 20,
+          marginBottom: theme.spacing.md,
           alignSelf: 'flex-start',
           borderWidth: 1,
-          borderColor: theme.colors.border,
-          shadowColor: theme.colors.shadow,
-          shadowOffset: { width: 0, height: 2 },
+          borderColor: '#e2e8f0',
+          shadowColor: '#64748b',
+          shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 2
+          shadowRadius: 8,
+          elevation: 4,
+          flexDirection: 'row',
+          alignItems: 'center',
+          minWidth: 240
         }}
       >
-        <Text style={{ 
-          color: theme.colors.text, 
-          fontSize: theme.fontSizes.xs, 
-          fontWeight: '600',
-          letterSpacing: 0.5
+        <View style={{
+          backgroundColor: '#3b82f6',
+          borderRadius: 8,
+          width: 32,
+          height: 32,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: theme.spacing.sm
         }}>
-          📅 De: {formatDate(startDate)} Até: {formatDate(endDate)}
-        </Text>
+          <MaterialIcons name="date-range" size={18} color="#ffffff" />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={{ 
+            color: '#475569', 
+            fontSize: theme.fontSizes.xs, 
+            fontWeight: '500',
+            marginBottom: 2
+          }}>
+            Período selecionado
+          </Text>
+          <Text style={{ 
+            color: '#1e293b', 
+            fontSize: theme.fontSizes.sm, 
+            fontWeight: '700'
+          }}>
+            {formatDate(startDate)} - {formatDate(endDate)}
+          </Text>
+        </View>
+        <MaterialIcons name="keyboard-arrow-down" size={20} color="#64748b" />
       </TouchableOpacity>
       
-      <Modal visible={showModal} transparent animationType="fade">
+      <Modal visible={showModal} transparent animationType="slide">
         <View style={{
           flex: 1,
-          backgroundColor: theme.colors.overlay,
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          padding: theme.spacing.lg
         }}>
           <View style={{
-            backgroundColor: theme.colors.surfaceElevated,
-            borderRadius: 12,
-            padding: 20,
-            width: '80%',
-            maxHeight: '70%'
+            backgroundColor: '#ffffff',
+            borderRadius: 24,
+            padding: theme.spacing.xl,
+            width: '100%',
+            maxWidth: 340,
+            maxHeight: '85%',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.25,
+            shadowRadius: 20,
+            elevation: 10
           }}>
-            <Text style={{ color: theme.colors.text, fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-              Selecionar Período
-            </Text>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: theme.spacing.lg
+            }}>
+              <View style={{
+                backgroundColor: '#3b82f6',
+                borderRadius: 10,
+                width: 36,
+                height: 36,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: theme.spacing.md
+              }}>
+                <MaterialIcons name="date-range" size={20} color="#ffffff" />
+              </View>
+              <Text style={{ 
+                color: '#1e293b', 
+                fontSize: theme.fontSizes.lg, 
+                fontWeight: '700'
+              }}>
+                Selecionar Período
+              </Text>
+            </View>
             
             {/* Seleção manual de datas */}
-            <View style={{ marginBottom: 20 }}>
-              <Text style={{ color: theme.colors.text, fontSize: 14, marginBottom: 8 }}>Data Inicial:</Text>
+            <View style={{ marginBottom: theme.spacing.lg }}>
+              <Text style={{ 
+                color: '#475569', 
+                fontSize: theme.fontSizes.sm, 
+                fontWeight: '600',
+                marginBottom: theme.spacing.sm
+              }}>
+                Data Inicial:
+              </Text>
               <View style={{ 
-                backgroundColor: theme.colors.surface, 
-                borderRadius: 8, 
-                marginBottom: 12,
-                paddingHorizontal: 12,
-                paddingVertical: 4
+                backgroundColor: '#f8fafc', 
+                borderRadius: 16, 
+                marginBottom: theme.spacing.md,
+                paddingHorizontal: theme.spacing.md,
+                paddingVertical: theme.spacing.sm,
+                borderWidth: 1,
+                borderColor: '#e2e8f0'
               }}>
                 <Input
                   value={tempStartDate}
                   onChangeText={setTempStartDate}
                   placeholder="dd/mm/yyyy"
-                  placeholderTextColor={theme.colors.textSecondary}
+                  placeholderTextColor="#94a3b8"
                   style={{ 
-                    color: theme.colors.text, 
+                    color: '#1e293b', 
                     backgroundColor: 'transparent',
                     borderWidth: 0,
                     margin: 0,
-                    height: 40
+                    height: 40,
+                    fontSize: theme.fontSizes.sm
                   }}
                 />
               </View>
               
-              <Text style={{ color: theme.colors.text, fontSize: 14, marginBottom: 8 }}>Data Final:</Text>
+              <Text style={{ 
+                color: '#475569', 
+                fontSize: theme.fontSizes.sm, 
+                fontWeight: '600',
+                marginBottom: theme.spacing.sm
+              }}>
+                Data Final:
+              </Text>
               <View style={{ 
-                backgroundColor: theme.colors.surface, 
-                borderRadius: 8, 
-                marginBottom: 12,
-                paddingHorizontal: 12,
-                paddingVertical: 4
+                backgroundColor: '#f8fafc', 
+                borderRadius: 16, 
+                marginBottom: theme.spacing.md,
+                paddingHorizontal: theme.spacing.md,
+                paddingVertical: theme.spacing.sm,
+                borderWidth: 1,
+                borderColor: '#e2e8f0'
               }}>
                 <Input
                   value={tempEndDate}
                   onChangeText={setTempEndDate}
                   placeholder="dd/mm/yyyy"
-                  placeholderTextColor={theme.colors.textSecondary}
+                  placeholderTextColor="#94a3b8"
                   style={{ 
-                    color: theme.colors.text, 
+                    color: '#1e293b', 
                     backgroundColor: 'transparent',
                     borderWidth: 0,
                     margin: 0,
-                    height: 40
+                    height: 40,
+                    fontSize: theme.fontSizes.sm
                   }}
                 />
               </View>
             </View>
             
             {/* Períodos pré-definidos */}
-            <Text style={{ color: theme.colors.text, fontSize: 14, marginBottom: 8 }}>Períodos rápidos:</Text>
+            <Text style={{ 
+              color: '#475569', 
+              fontSize: theme.fontSizes.sm, 
+              fontWeight: '600',
+              marginBottom: theme.spacing.sm
+            }}>
+              Períodos rápidos:
+            </Text>
             {presetRanges.map((range, index) => (
               <TouchableOpacity
                 key={index}
@@ -774,41 +853,67 @@ const DateSelector: React.FC<{
                   setTempEndDate(formatDateForInput(range.end));
                 }}
                 style={{
-                  backgroundColor: theme.colors.surface,
-                  padding: 12,
-                  borderRadius: 8,
-                  marginBottom: 8
+                  backgroundColor: '#3b82f6',
+                  paddingHorizontal: theme.spacing.lg,
+                  paddingVertical: theme.spacing.md,
+                  borderRadius: 16,
+                  marginBottom: theme.spacing.sm,
+                  flexDirection: 'row',
+                  alignItems: 'center'
                 }}
               >
-                <Text style={{ color: theme.colors.textInverse, textAlign: 'center' }}>{range.label}</Text>
+                <MaterialIcons name="schedule" size={16} color="#ffffff" style={{ marginRight: theme.spacing.sm }} />
+                <Text style={{ 
+                  color: '#ffffff', 
+                  fontWeight: '600',
+                  fontSize: theme.fontSizes.sm
+                }}>
+                  {range.label}
+                </Text>
               </TouchableOpacity>
             ))}
             
-            <View style={{ flexDirection: 'row', marginTop: 16 }}>
+            <View style={{ flexDirection: 'row', marginTop: theme.spacing.lg, gap: theme.spacing.sm }}>
               <TouchableOpacity
                 onPress={() => setShowModal(false)}
                 style={{
-                  backgroundColor: theme.colors.error,
-                  padding: 12,
-                  borderRadius: 8,
+                  backgroundColor: '#f1f5f9',
+                  paddingVertical: theme.spacing.md,
+                  paddingHorizontal: theme.spacing.lg,
+                  borderRadius: 16,
                   flex: 1,
-                  marginRight: 8
+                  borderWidth: 1,
+                  borderColor: '#e2e8f0'
                 }}
               >
-                <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Cancelar</Text>
+                <Text style={{ 
+                  color: '#475569', 
+                  textAlign: 'center', 
+                  fontWeight: '600',
+                  fontSize: theme.fontSizes.sm
+                }}>
+                  Cancelar
+                </Text>
               </TouchableOpacity>
               
               <TouchableOpacity
                 onPress={handleSave}
                 style={{
-                  backgroundColor: theme.colors.primary,
-                  padding: 12,
-                  borderRadius: 8,
-                  flex: 1,
-                  marginLeft: 8
+                  backgroundColor: '#3b82f6',
+                  paddingVertical: theme.spacing.md,
+                  paddingHorizontal: theme.spacing.lg,
+                  borderRadius: 16,
+                  flex: 1
                 }}
               >
-                <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Aplicar</Text>
+                <Text style={{ 
+                  color: '#ffffff', 
+                  textAlign: 'center', 
+                  fontWeight: '700',
+                  fontSize: theme.fontSizes.sm
+                }}>
+                  Aplicar
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -833,47 +938,100 @@ const ProductionSelector: React.FC<{
       <TouchableOpacity
         onPress={() => setShowModal(true)}
         style={{
-          backgroundColor: theme.colors.surfaceElevated,
-          padding: theme.spacing.md,
-          borderRadius: theme.borderRadius.xl,
+          backgroundColor: '#ffffff',
+          paddingHorizontal: theme.spacing.lg,
+          paddingVertical: theme.spacing.md,
+          borderRadius: 20,
           marginBottom: theme.spacing.lg,
           borderWidth: 1,
-          borderColor: theme.colors.border,
-          shadowColor: theme.colors.shadow,
-          shadowOffset: { width: 0, height: 2 },
+          borderColor: '#e2e8f0',
+          shadowColor: '#64748b',
+          shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.1,
-          shadowRadius: 6,
-          elevation: 3
+          shadowRadius: 8,
+          elevation: 4,
+          flexDirection: 'row',
+          alignItems: 'center',
+          alignSelf: 'flex-start',
+          minWidth: 200
         }}
       >
-        <Text style={{ 
-          color: theme.colors.text, 
-          fontSize: theme.fontSizes.sm, 
-          fontWeight: '600', 
-          textAlign: 'center',
-          letterSpacing: 0.3
+        <View style={{
+          backgroundColor: '#10b981',
+          borderRadius: 8,
+          width: 32,
+          height: 32,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: theme.spacing.sm
         }}>
-          🏭 {selectedLineId ? selectedLine?.name || 'Linha específica' : 'Todas as Linhas'}
-        </Text>
+          <MaterialIcons name="factory" size={18} color="#ffffff" />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={{ 
+            color: '#475569', 
+            fontSize: theme.fontSizes.xs, 
+            fontWeight: '500',
+            marginBottom: 2
+          }}>
+            Linha de produção
+          </Text>
+          <Text style={{ 
+            color: '#1e293b', 
+            fontSize: theme.fontSizes.sm, 
+            fontWeight: '700'
+          }}>
+            {selectedLineId ? selectedLine?.name || 'Linha específica' : 'Todas as Linhas'}
+          </Text>
+        </View>
+        <MaterialIcons name="keyboard-arrow-down" size={20} color="#64748b" />
       </TouchableOpacity>
       
-      <Modal visible={showModal} transparent animationType="fade">
+      <Modal visible={showModal} transparent animationType="slide">
         <View style={{
           flex: 1,
-          backgroundColor: theme.colors.overlay,
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          padding: theme.spacing.lg
         }}>
           <View style={{
-            backgroundColor: theme.colors.surfaceElevated,
-            borderRadius: 12,
-            padding: 20,
-            width: '80%',
-            maxHeight: '70%'
+            backgroundColor: '#ffffff',
+            borderRadius: 24,
+            padding: theme.spacing.xl,
+            width: '100%',
+            maxWidth: 320,
+            maxHeight: '80%',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.25,
+            shadowRadius: 20,
+            elevation: 10
           }}>
-            <Text style={{ color: theme.colors.text, fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-              Todo(s)
-            </Text>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: theme.spacing.lg
+            }}>
+              <View style={{
+                backgroundColor: '#10b981',
+                borderRadius: 10,
+                width: 36,
+                height: 36,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: theme.spacing.md
+              }}>
+                <MaterialIcons name="factory" size={20} color="#ffffff" />
+              </View>
+              <Text style={{ 
+                color: '#1e293b', 
+                fontSize: theme.fontSizes.lg, 
+                fontWeight: '700'
+              }}>
+                Selecionar Linha
+              </Text>
+            </View>
             
             <TouchableOpacity
               onPress={() => {
@@ -881,16 +1039,42 @@ const ProductionSelector: React.FC<{
                 setShowModal(false);
               }}
               style={{
-                backgroundColor: selectedLineId === null ? theme.colors.primary : theme.colors.surface,
-                padding: 12,
-                borderRadius: 8,
-                marginBottom: 8
+                backgroundColor: selectedLineId === null ? '#3b82f6' : '#f8fafc',
+                paddingHorizontal: theme.spacing.lg,
+                paddingVertical: theme.spacing.md,
+                borderRadius: 16,
+                marginBottom: theme.spacing.sm,
+                borderWidth: selectedLineId === null ? 0 : 1,
+                borderColor: '#e2e8f0',
+                flexDirection: 'row',
+                alignItems: 'center'
               }}
             >
-              <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Todo(s)</Text>
+              <View style={{
+                backgroundColor: selectedLineId === null ? 'rgba(255, 255, 255, 0.2)' : '#e2e8f0',
+                borderRadius: 6,
+                width: 24,
+                height: 24,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: theme.spacing.sm
+              }}>
+                <MaterialIcons 
+                  name="check-circle" 
+                  size={16} 
+                  color={selectedLineId === null ? '#ffffff' : '#64748b'} 
+                />
+              </View>
+              <Text style={{ 
+                color: selectedLineId === null ? '#ffffff' : '#1e293b', 
+                fontWeight: selectedLineId === null ? '700' : '500',
+                fontSize: theme.fontSizes.sm
+              }}>
+                Todas as Linhas
+              </Text>
             </TouchableOpacity>
             
-            <ScrollView style={{ maxHeight: 200 }}>
+            <ScrollView style={{ maxHeight: 280 }} showsVerticalScrollIndicator={false}>
               {lines.map((line) => (
                 <TouchableOpacity
                   key={line.id}
@@ -899,13 +1083,39 @@ const ProductionSelector: React.FC<{
                     setShowModal(false);
                   }}
                   style={{
-                    backgroundColor: selectedLineId === line.id ? theme.colors.primary : theme.colors.surface,
-                    padding: 12,
-                    borderRadius: 8,
-                    marginBottom: 8
+                    backgroundColor: selectedLineId === line.id ? '#3b82f6' : '#f8fafc',
+                    paddingHorizontal: theme.spacing.lg,
+                    paddingVertical: theme.spacing.md,
+                    borderRadius: 16,
+                    marginBottom: theme.spacing.sm,
+                    borderWidth: selectedLineId === line.id ? 0 : 1,
+                    borderColor: '#e2e8f0',
+                    flexDirection: 'row',
+                    alignItems: 'center'
                   }}
                 >
-                  <Text style={{ color: theme.colors.textInverse, textAlign: 'center' }}>{line.name} {line.code}</Text>
+                  <View style={{
+                    backgroundColor: selectedLineId === line.id ? 'rgba(255, 255, 255, 0.2)' : '#e2e8f0',
+                    borderRadius: 6,
+                    width: 24,
+                    height: 24,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginRight: theme.spacing.sm
+                  }}>
+                    <MaterialIcons 
+                      name="check-circle" 
+                      size={16} 
+                      color={selectedLineId === line.id ? '#ffffff' : '#64748b'} 
+                    />
+                  </View>
+                  <Text style={{ 
+                    color: selectedLineId === line.id ? '#ffffff' : '#1e293b', 
+                    fontWeight: selectedLineId === line.id ? '700' : '500',
+                    fontSize: theme.fontSizes.sm
+                  }}>
+                    {line.name} {line.code}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -913,13 +1123,22 @@ const ProductionSelector: React.FC<{
             <TouchableOpacity
               onPress={() => setShowModal(false)}
               style={{
-                backgroundColor: theme.colors.error,
-                padding: 12,
-                borderRadius: 8,
-                marginTop: 16
+                backgroundColor: '#f1f5f9',
+                paddingVertical: theme.spacing.md,
+                borderRadius: 16,
+                marginTop: theme.spacing.lg,
+                borderWidth: 1,
+                borderColor: '#e2e8f0'
               }}
             >
-              <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Fechar</Text>
+              <Text style={{ 
+                color: '#475569', 
+                textAlign: 'center', 
+                fontWeight: '600',
+                fontSize: theme.fontSizes.sm
+              }}>
+                Cancelar
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
