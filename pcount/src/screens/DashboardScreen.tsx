@@ -28,9 +28,22 @@ const { width } = Dimensions.get('window');
 const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
-      <View style={{ alignItems: 'center', marginVertical: 16, height: 200 }}>
-        <Text style={{ color: theme.colors.textSecondary, textAlign: 'center' }}>
-          Nenhum dado de produção disponível
+      <View style={{ 
+        alignItems: 'center', 
+        marginVertical: theme.spacing.lg, 
+        height: 200, 
+        justifyContent: 'center',
+        backgroundColor: theme.colors.surfaceSecondary,
+        borderRadius: theme.borderRadius.xl,
+        padding: theme.spacing.xl
+      }}>
+        <Text style={{ 
+          color: theme.colors.textSecondary, 
+          textAlign: 'center',
+          fontSize: theme.fontSizes.base,
+          fontWeight: '500'
+        }}>
+          📊 Nenhum dado de produção disponível
         </Text>
       </View>
     );
@@ -86,8 +99,8 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
                 y={y}
                 width={barWidth * 0.8}
                 height={barHeight}
-                fill={theme.colors.primary}
-                opacity={0.8}
+                fill={theme.colors.accent}
+                opacity={0.9}
                 rx={2}
               />
               {/* Valor da quantidade em cima da barra */}
@@ -138,51 +151,72 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
   );
 };
 
-// Componente do header com logo e logout
+// Componente do header modernizado
 const DashboardHeader: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   return (
     <View style={{
-      backgroundColor: '#00BFFF',
+      backgroundColor: theme.colors.primary,
       paddingTop: 50,
-      paddingBottom: 16,
-      paddingHorizontal: 16,
+      paddingBottom: 20,
+      paddingHorizontal: theme.spacing.lg,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      shadowColor: theme.colors.shadow,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 12,
+      elevation: 8
     }}>
       <View style={{
-        backgroundColor: '#FFD700',
-        padding: 8,
-        borderRadius: 8,
-        width: 60,
-        height: 40,
+        backgroundColor: theme.colors.warning,
+        padding: theme.spacing.sm,
+        borderRadius: theme.borderRadius.lg,
+        width: 65,
+        height: 45,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: theme.colors.shadow,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3
       }}>
-        <Text style={{ fontSize: 10, fontWeight: 'bold', color: '#000' }}>VITON</Text>
+        <Text style={{ 
+          fontSize: theme.fontSizes.xs, 
+          fontWeight: '800', 
+          color: theme.colors.text,
+          letterSpacing: 0.5
+        }}>VITON</Text>
       </View>
       
       <Text style={{
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#fff',
+        fontSize: theme.fontSizes['3xl'],
+        fontWeight: '800',
+        color: theme.colors.textInverse,
         textAlign: 'center',
-        flex: 1
+        flex: 1,
+        letterSpacing: -1
       }}>PCOUNT</Text>
       
       <TouchableOpacity
         onPress={onLogout}
         style={{
-          backgroundColor: '#4A5568',
-          padding: 8,
-          borderRadius: 8,
-          width: 40,
-          height: 40,
+          backgroundColor: theme.colors.overlay,
+          padding: theme.spacing.sm,
+          borderRadius: theme.borderRadius.lg,
+          width: 45,
+          height: 45,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          shadowColor: theme.colors.shadow,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
+          elevation: 4
         }}
       >
-        <Text style={{ color: '#fff', fontSize: 18 }}>⏻</Text>
+        <Text style={{ color: theme.colors.textInverse, fontSize: 20 }}>⏻</Text>
       </TouchableOpacity>
     </View>
   );
@@ -371,16 +405,28 @@ const DateSelector: React.FC<{
           setShowModal(true);
         }}
         style={{
-          backgroundColor: '#2D3748',
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-          borderRadius: 20,
-          marginBottom: 8,
-          alignSelf: 'flex-start'
+          backgroundColor: theme.colors.surfaceElevated,
+          paddingHorizontal: theme.spacing.lg,
+          paddingVertical: theme.spacing.sm,
+          borderRadius: theme.borderRadius.full,
+          marginBottom: theme.spacing.sm,
+          alignSelf: 'flex-start',
+          borderWidth: 1,
+          borderColor: theme.colors.border,
+          shadowColor: theme.colors.shadow,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 2
         }}
       >
-        <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>
-          De: {formatDate(startDate)} Até: {formatDate(endDate)}
+        <Text style={{ 
+          color: theme.colors.text, 
+          fontSize: theme.fontSizes.xs, 
+          fontWeight: '600',
+          letterSpacing: 0.5
+        }}>
+          📅 De: {formatDate(startDate)} Até: {formatDate(endDate)}
         </Text>
       </TouchableOpacity>
       
@@ -521,14 +567,27 @@ const ProductionSelector: React.FC<{
       <TouchableOpacity
         onPress={() => setShowModal(true)}
         style={{
-          backgroundColor: '#4A5568',
-          padding: 12,
-          borderRadius: 8,
-          marginBottom: 16
+          backgroundColor: theme.colors.surfaceElevated,
+          padding: theme.spacing.md,
+          borderRadius: theme.borderRadius.xl,
+          marginBottom: theme.spacing.lg,
+          borderWidth: 1,
+          borderColor: theme.colors.border,
+          shadowColor: theme.colors.shadow,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 6,
+          elevation: 3
         }}
       >
-        <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold', textAlign: 'center' }}>
-          {selectedLineId ? selectedLine?.name || 'Linha específica' : 'Todo(s)'}
+        <Text style={{ 
+          color: theme.colors.text, 
+          fontSize: theme.fontSizes.sm, 
+          fontWeight: '600', 
+          textAlign: 'center',
+          letterSpacing: 0.3
+        }}>
+          🏭 {selectedLineId ? selectedLine?.name || 'Linha específica' : 'Todas as Linhas'}
         </Text>
       </TouchableOpacity>
       
