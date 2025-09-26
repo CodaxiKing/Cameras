@@ -3,7 +3,7 @@ import { theme } from '../theme';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #f8fafc;
+  background-color: ${theme.colors.background};
 `;
 
 export const CenteredContainer = styled.View`
@@ -30,16 +30,14 @@ export const Input = styled.TextInput`
   border-radius: ${theme.borderRadius.xl}px;
   padding: 0 ${theme.spacing.lg}px;
   margin-bottom: ${theme.spacing.md}px;
-  background-color: rgba(248, 250, 252, 0.9);
+  background-color: ${theme.colors.surfaceElevated};
   color: ${theme.colors.text};
   font-size: ${theme.fontSizes.base}px;
-  shadow-color: rgba(0, 0, 0, 0.05);
-  shadow-offset: 0px 4px;
+  shadow-color: ${theme.colors.shadow};
+  shadow-offset: 0px 2px;
   shadow-opacity: 0.08;
-  shadow-radius: 12px;
-  elevation: 3;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  shadow-radius: 8px;
+  elevation: 2;
 `;
 
 export const Button = styled.TouchableOpacity<{ variant?: 'primary' | 'secondary' }>`
@@ -51,13 +49,11 @@ export const Button = styled.TouchableOpacity<{ variant?: 'primary' | 'secondary
   align-items: center;
   border-radius: ${theme.borderRadius.xl}px;
   margin-top: ${theme.spacing.md}px;
-  shadow-color: rgba(103, 126, 234, 0.3);
-  shadow-offset: 0px 6px;
-  shadow-opacity: 0.3;
-  shadow-radius: 16px;
-  elevation: 8;
-  border-width: 1px;
-  border-color: rgba(255, 255, 255, 0.2);
+  shadow-color: ${theme.colors.primary};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.25;
+  shadow-radius: 12px;
+  elevation: 6;
 `;
 
 export const ButtonText = styled.Text<{ variant?: 'primary' | 'secondary' }>`
