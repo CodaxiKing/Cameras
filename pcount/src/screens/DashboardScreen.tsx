@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, ScrollView, Dimensions, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { View, Text, ScrollView, Dimensions, TouchableOpacity, Modal, FlatList, useWindowDimensions } from 'react-native';
 import { Svg, Rect, Text as SvgText, Line, G } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -23,7 +23,18 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { theme } from '../theme';
 
-const { width } = Dimensions.get('window');
+// Funções para obter valores responsivos baseados na largura
+const getResponsivePadding = (width: number) => {
+  if (width < 375) return 12;
+  if (width < 768) return 16;
+  return 20;
+};
+
+const getResponsiveCardSpacing = (width: number) => {
+  if (width < 375) return theme.spacing.xs / 2;
+  if (width < 768) return theme.spacing.xs;
+  return theme.spacing.sm;
+};
 
 // Componente de cartão do Total Produzido com design modernizado
 const TotalProducedCard: React.FC<{ 
@@ -31,6 +42,8 @@ const TotalProducedCard: React.FC<{
   title: string;
   subtitle?: string;
 }> = ({ value, title, subtitle }) => {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 375;
   // Garantir que o valor seja positivo
   const safeValue = Math.max(0, value);
   
@@ -53,7 +66,7 @@ const TotalProducedCard: React.FC<{
     <View style={{
       backgroundColor: '#ffffff',
       borderRadius: theme.borderRadius['2xl'],
-      padding: theme.spacing.xl,
+      padding: isSmallScreen ? theme.spacing.lg : theme.spacing.xl,
       marginVertical: theme.spacing.md,
       shadowColor: theme.colors.shadow,
       shadowOffset: { width: 0, height: 4 },
@@ -77,11 +90,11 @@ const TotalProducedCard: React.FC<{
       
       {/* Título */}
       <Text style={{
-        fontSize: theme.fontSizes.sm,
+        fontSize: isSmallScreen ? theme.fontSizes.xs : theme.fontSizes.sm,
         fontWeight: '700',
         color: theme.colors.text,
         textAlign: 'center',
-        marginBottom: theme.spacing.lg,
+        marginBottom: isSmallScreen ? theme.spacing.md : theme.spacing.lg,
         letterSpacing: 1,
         textTransform: 'uppercase'
       }}>
@@ -92,64 +105,70 @@ const TotalProducedCard: React.FC<{
       <View style={{ alignItems: 'center' }}>
         {/* Círculo visual com indicador de progresso */}
         <View style={{
-          width: 180,
-          height: 180,
-          borderRadius: 90,
+          width: isSmallScreen ? 140 : 180,
+          height: isSmallScreen ? 140 : 180,
+          borderRadius: isSmallScreen ? 70 : 90,
           backgroundColor: '#f8fafc',
           justifyContent: 'center',
           alignItems: 'center',
-          marginBottom: theme.spacing.lg,
-          borderWidth: 8,
+          marginBottom: isSmallScreen ? theme.spacing.md : theme.spacing.lg,
+          borderWidth: isSmallScreen ? 6 : 8,
           borderColor: currentLevel.color,
           position: 'relative'
         }}>
           {/* Valor principal */}
-          <Text style={{
-            fontSize: 36,
-            fontWeight: '900',
-            color: theme.colors.text,
-            textAlign: 'center'
-          }}>
+          <Text 
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={{
+              fontSize: isSmallScreen ? 28 : 36,
+              fontWeight: '900',
+              color: theme.colors.text,
+              textAlign: 'center',
+              paddingHorizontal: theme.spacing.sm
+            }}
+          >
             {safeValue.toLocaleString('pt-BR')}
           </Text>
           
           {/* Indicador pequeno do nível atual */}
           <View style={{
             position: 'absolute',
-            top: -12,
-            right: -12,
-            width: 24,
-            height: 24,
-            borderRadius: 12,
+            top: isSmallScreen ? -8 : -12,
+            right: isSmallScreen ? -8 : -12,
+            width: isSmallScreen ? 20 : 24,
+            height: isSmallScreen ? 20 : 24,
+            borderRadius: isSmallScreen ? 10 : 12,
             backgroundColor: currentLevel.color,
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-            <MaterialIcons name="trending-up" size={14} color="#ffffff" />
+            <MaterialIcons name="trending-up" size={isSmallScreen ? 12 : 14} color="#ffffff" />
           </View>
         </View>
         
-        {/* Legend horizontal */}
+        {/* Legend responsiva */}
         <View style={{ 
           flexDirection: 'row', 
           flexWrap: 'wrap', 
           justifyContent: 'center',
-          marginBottom: theme.spacing.md
+          marginBottom: isSmallScreen ? theme.spacing.sm : theme.spacing.md,
+          paddingHorizontal: theme.spacing.xs
         }}>
           {levels.map((level, index) => (
             <View key={index} style={{
               flexDirection: 'row',
               alignItems: 'center',
-              marginHorizontal: theme.spacing.xs,
+              marginHorizontal: isSmallScreen ? 2 : theme.spacing.xs,
               marginBottom: theme.spacing.xs,
               backgroundColor: safeValue >= level.threshold ? level.color : '#f1f5f9',
-              paddingHorizontal: theme.spacing.sm,
-              paddingVertical: 4,
+              paddingHorizontal: isSmallScreen ? 6 : theme.spacing.sm,
+              paddingVertical: isSmallScreen ? 2 : 4,
               borderRadius: theme.borderRadius.md,
               opacity: safeValue >= level.threshold ? 1 : 0.6
             }}>
               <Text style={{
-                fontSize: theme.fontSizes.xs,
+                fontSize: isSmallScreen ? 10 : theme.fontSizes.xs,
                 color: safeValue >= level.threshold ? '#ffffff' : theme.colors.text,
                 fontWeight: '700'
               }}>
@@ -184,13 +203,25 @@ const StatCard: React.FC<{
   accentColor: string;
   backgroundColor?: string;
 }> = ({ title, value, subtitle, icon, accentColor, backgroundColor = '#ffffff' }) => {
+  const { width } = useWindowDimensions();
+  // Tamanhos responsivos baseados no tamanho da tela
+  const isSmallScreen = width < 375;
+  const isLargeScreen = width >= 768;
+  const cardPadding = isSmallScreen ? theme.spacing.sm : theme.spacing.md;
+  const titleFontSize = isSmallScreen ? 10 : theme.fontSizes.xs;
+  const valueFontSize = isSmallScreen ? theme.fontSizes.lg : theme.fontSizes.xl;
+  const subtitleFontSize = isSmallScreen ? 9 : theme.fontSizes.xs;
+  const iconSize = isSmallScreen ? 24 : 28;
+  const iconPadding = isSmallScreen ? 4 : 6;
+  const iconInnerSize = isSmallScreen ? 14 : 16;
+  
   return (
     <View style={{
       backgroundColor: backgroundColor,
       borderRadius: theme.borderRadius.xl,
-      padding: theme.spacing.md,
+      padding: cardPadding,
       flex: 1,
-      marginHorizontal: theme.spacing.xs,
+      marginHorizontal: getResponsiveCardSpacing(width),
       shadowColor: theme.colors.shadow,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -198,7 +229,8 @@ const StatCard: React.FC<{
       elevation: 3,
       borderLeftWidth: 4,
       borderLeftColor: accentColor,
-      minHeight: 80
+      minHeight: isSmallScreen ? 70 : 80,
+      maxWidth: isLargeScreen ? 180 : undefined // Limite máximo em telas grandes
     }}>
       <View style={{ 
         flexDirection: 'row', 
@@ -206,41 +238,51 @@ const StatCard: React.FC<{
         alignItems: 'flex-start',
         marginBottom: theme.spacing.xs
       }}>
-        <Text style={{ 
-          fontSize: theme.fontSizes.xs, 
-          color: theme.colors.textSecondary,
-          fontWeight: '600',
-          flex: 1
-        }}>
+        <Text 
+          numberOfLines={1}
+          style={{ 
+            fontSize: titleFontSize, 
+            color: theme.colors.textSecondary,
+            fontWeight: '600',
+            flex: 1
+          }}
+        >
           {title}
         </Text>
         <View style={{
           backgroundColor: accentColor,
           borderRadius: theme.borderRadius.sm,
-          padding: 6,
-          width: 28,
-          height: 28,
+          padding: iconPadding,
+          width: iconSize,
+          height: iconSize,
           justifyContent: 'center',
           alignItems: 'center'
         }}>
-          <MaterialIcons name={icon as any} size={16} color="#ffffff" />
+          <MaterialIcons name={icon as any} size={iconInnerSize} color="#ffffff" />
         </View>
       </View>
       
-      <Text style={{ 
-        fontSize: theme.fontSizes.xl, 
-        fontWeight: '800', 
-        color: theme.colors.text,
-        marginBottom: 2
-      }}>
+      <Text 
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={{ 
+          fontSize: valueFontSize, 
+          fontWeight: '800', 
+          color: theme.colors.text,
+          marginBottom: 2
+        }}
+      >
         {value}
       </Text>
       
-      <Text style={{ 
-        fontSize: theme.fontSizes.xs, 
-        color: theme.colors.textSecondary,
-        fontWeight: '500'
-      }}>
+      <Text 
+        numberOfLines={1}
+        style={{ 
+          fontSize: subtitleFontSize, 
+          color: theme.colors.textSecondary,
+          fontWeight: '500'
+        }}
+      >
         {subtitle}
       </Text>
     </View>
@@ -249,6 +291,7 @@ const StatCard: React.FC<{
 
 // Componente de gráfico de barras modernizado para mobile
 const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ data }) => {
+  const { width: screenWidth } = useWindowDimensions();
   if (!data || data.length === 0) {
     return (
       <View style={{ 
@@ -277,7 +320,7 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
   }
 
   // Tamanho responsivo e adaptativo para diferentes tamanhos de tela
-  const baseChartWidth = Math.min(width - 40, 480);
+  const baseChartWidth = Math.min(screenWidth - 40, 480);
   const chartHeight = 140;
   const maxValue = Math.max(...data.map(d => d.value), 1);
   const padding = { top: 20, right: 16, bottom: 30, left: 16 };
@@ -1149,6 +1192,12 @@ const ProductionSelector: React.FC<{
 
 export const DashboardScreen: React.FC = () => {
   const { selectedContract, currentUser, logout } = useAuth();
+  const { width } = useWindowDimensions();
+  
+  // Breakpoints dinâmicos baseados na largura atual
+  const isSmallScreen = width < 375;
+  const isMediumScreen = width >= 375 && width < 768;
+  const isLargeScreen = width >= 768;
   
   // Estados para filtros
   // Função para obter data do Brasil (deve estar antes dos useState)
@@ -1248,7 +1297,11 @@ export const DashboardScreen: React.FC = () => {
     <Container>
       <DashboardHeader onLogout={handleLogout} />
       
-      <ScrollView style={{ padding: 16 }}>
+      <ScrollView 
+        style={{ padding: getResponsivePadding(width) }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: theme.spacing.xl }}
+      >
         <DateSelector
           startDate={startDate}
           endDate={endDate}
@@ -1262,44 +1315,85 @@ export const DashboardScreen: React.FC = () => {
         />
         
         <Text style={{ 
-          fontSize: 18, 
+          fontSize: isSmallScreen ? 16 : 18, 
           fontWeight: 'bold', 
           color: theme.colors.text, 
-          marginBottom: 16,
-          textAlign: 'center'
-        }}>Dashboard {selectedLineId ? productionLines?.find(l => l.id === selectedLineId)?.name : ''}</Text>
-        
-        {/* Cartões de estatísticas modernos */}
-        <View style={{ 
-          flexDirection: 'row', 
-          justifyContent: 'space-between', 
-          marginBottom: theme.spacing.lg,
-          paddingHorizontal: theme.spacing.xs
+          marginBottom: isSmallScreen ? 12 : 16,
+          textAlign: 'center',
+          paddingHorizontal: theme.spacing.sm
         }}>
-          <StatCard
-            title="Hora(s)"
-            value={stats.operationHours}
-            subtitle="Operação"
-            icon="schedule"
-            accentColor="#f59e0b"
-          />
-          
-          <StatCard
-            title="Hora(s)"
-            value={stats.productiveHours}
-            subtitle="Produtivas"
-            icon="warning"
-            accentColor="#ef4444"
-          />
-          
-          <StatCard
-            title="Produção"
-            value={`${stats.avgProduction}`}
-            subtitle="Média / Hr"
-            icon="trending-up"
-            accentColor="#06b6d4"
-          />
-        </View>
+          Dashboard {selectedLineId ? productionLines?.find(l => l.id === selectedLineId)?.name : ''}
+        </Text>
+        
+        {/* Cartões de estatísticas com layout responsivo real */}
+        {isSmallScreen ? (
+          // Layout responsivo para telas pequenas: primeiro card full-width, outros dois em linha
+          <View style={{ marginBottom: theme.spacing.lg }}>
+            {/* Primeiro cartão ocupando largura total */}
+            <View style={{ marginBottom: theme.spacing.sm }}>
+              <StatCard
+                title="Hora(s)"
+                value={stats.operationHours}
+                subtitle="Operação"
+                icon="schedule"
+                accentColor="#f59e0b"
+              />
+            </View>
+            
+            {/* Dois cartões em linha */}
+            <View style={{ 
+              flexDirection: 'row', 
+              justifyContent: 'space-between'
+            }}>
+              <StatCard
+                title="Hora(s)"
+                value={stats.productiveHours}
+                subtitle="Produtivas"
+                icon="warning"
+                accentColor="#ef4444"
+              />
+              <StatCard
+                title="Produção"
+                value={`${stats.avgProduction}`}
+                subtitle="Média / Hr"
+                icon="trending-up"
+                accentColor="#06b6d4"
+              />
+            </View>
+          </View>
+        ) : (
+          // Layout horizontal tradicional para telas médias e grandes
+          <View style={{ 
+            flexDirection: 'row', 
+            justifyContent: 'space-between', 
+            marginBottom: theme.spacing.lg,
+            paddingHorizontal: theme.spacing.xs
+          }}>
+            <StatCard
+              title="Hora(s)"
+              value={stats.operationHours}
+              subtitle="Operação"
+              icon="schedule"
+              accentColor="#f59e0b"
+            />
+            
+            <StatCard
+              title="Hora(s)"
+              value={stats.productiveHours}
+              subtitle="Produtivas"
+              icon="warning"
+              accentColor="#ef4444"
+            />
+            
+            <StatCard
+              title="Produção"
+              value={`${stats.avgProduction}`}
+              subtitle="Média / Hr"
+              icon="trending-up"
+              accentColor="#06b6d4"
+            />
+          </View>
+        )}
         
         {/* Cartão do Total Produzido */}
         <TotalProducedCard
@@ -1308,18 +1402,39 @@ export const DashboardScreen: React.FC = () => {
           subtitle="Unidades produzidas no período"
         />
         
-        <Card style={{ marginTop: 16 }}>
-          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 16, color: theme.colors.text }}>TOTAL PRODUZIDO / HORA</Text>
+        <View style={{ 
+          backgroundColor: '#ffffff',
+          borderRadius: theme.borderRadius.xl,
+          padding: isSmallScreen ? theme.spacing.md : theme.spacing.lg,
+          marginTop: theme.spacing.lg,
+          shadowColor: theme.colors.shadow,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 8,
+          elevation: 3
+        }}>
+          <Text style={{ 
+            fontSize: isSmallScreen ? 12 : 14, 
+            fontWeight: 'bold', 
+            marginBottom: theme.spacing.md, 
+            color: theme.colors.text,
+            textAlign: 'center',
+            textTransform: 'uppercase',
+            letterSpacing: 0.5
+          }}>
+            TOTAL PRODUZIDO / HORA
+          </Text>
           <BarChart data={stats.hourlyProduction} />
           <Text style={{ 
-            fontSize: 11, 
+            fontSize: isSmallScreen ? 10 : 11, 
             color: theme.colors.textSecondary, 
             textAlign: 'center', 
-            marginTop: 8 
+            marginTop: theme.spacing.sm,
+            paddingHorizontal: theme.spacing.sm
           }}>
             Unidades produzidas por horário de trabalho
           </Text>
-        </Card>
+        </View>
       </ScrollView>
     </Container>
   );
