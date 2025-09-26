@@ -457,7 +457,7 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
 const DashboardHeader: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   return (
     <LinearGradient
-      colors={['#0ea5e9', '#3b82f6', '#6366f1']}
+      colors={['#1e40af', '#2563eb', '#3b82f6']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={{
@@ -507,24 +507,26 @@ const DashboardHeader: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         marginHorizontal: theme.spacing.lg
       }}>PCOUNT</Text>
       
-      {/* Botão Power */}
+      {/* Botão Logout */}
       <TouchableOpacity
         onPress={onLogout}
         style={{
-          backgroundColor: 'rgba(30, 41, 59, 0.8)',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
           borderRadius: theme.borderRadius.xl,
-          width: 42,
-          height: 42,
+          width: 44,
+          height: 44,
           justifyContent: 'center',
           alignItems: 'center',
+          borderWidth: 1,
+          borderColor: 'rgba(255, 255, 255, 0.3)',
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: 3 },
-          shadowOpacity: 0.3,
-          shadowRadius: 6,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 8,
           elevation: 5
         }}
       >
-        <MaterialIcons name="power-settings-new" size={20} color={theme.colors.textInverse} />
+        <MaterialIcons name="power-settings-new" size={22} color={theme.colors.textInverse} />
       </TouchableOpacity>
     </LinearGradient>
   );
