@@ -433,26 +433,26 @@ const DateSelector: React.FC<{
       <Modal visible={showModal} transparent animationType="fade">
         <View style={{
           flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: theme.colors.overlay,
           justifyContent: 'center',
           alignItems: 'center'
         }}>
           <View style={{
-            backgroundColor: '#2D3748',
+            backgroundColor: theme.colors.surfaceElevated,
             borderRadius: 12,
             padding: 20,
             width: '80%',
             maxHeight: '70%'
           }}>
-            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
+            <Text style={{ color: theme.colors.text, fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
               Selecionar Período
             </Text>
             
             {/* Seleção manual de datas */}
             <View style={{ marginBottom: 20 }}>
-              <Text style={{ color: '#fff', fontSize: 14, marginBottom: 8 }}>Data Inicial:</Text>
+              <Text style={{ color: theme.colors.text, fontSize: 14, marginBottom: 8 }}>Data Inicial:</Text>
               <View style={{ 
-                backgroundColor: '#4A5568', 
+                backgroundColor: theme.colors.surface, 
                 borderRadius: 8, 
                 marginBottom: 12,
                 paddingHorizontal: 12,
@@ -462,9 +462,9 @@ const DateSelector: React.FC<{
                   value={tempStartDate}
                   onChangeText={setTempStartDate}
                   placeholder="dd/mm/yyyy"
-                  placeholderTextColor="#A0A0A0"
+                  placeholderTextColor={theme.colors.textSecondary}
                   style={{ 
-                    color: '#fff', 
+                    color: theme.colors.text, 
                     backgroundColor: 'transparent',
                     borderWidth: 0,
                     margin: 0,
@@ -473,9 +473,9 @@ const DateSelector: React.FC<{
                 />
               </View>
               
-              <Text style={{ color: '#fff', fontSize: 14, marginBottom: 8 }}>Data Final:</Text>
+              <Text style={{ color: theme.colors.text, fontSize: 14, marginBottom: 8 }}>Data Final:</Text>
               <View style={{ 
-                backgroundColor: '#4A5568', 
+                backgroundColor: theme.colors.surface, 
                 borderRadius: 8, 
                 marginBottom: 12,
                 paddingHorizontal: 12,
@@ -485,9 +485,9 @@ const DateSelector: React.FC<{
                   value={tempEndDate}
                   onChangeText={setTempEndDate}
                   placeholder="dd/mm/yyyy"
-                  placeholderTextColor="#A0A0A0"
+                  placeholderTextColor={theme.colors.textSecondary}
                   style={{ 
-                    color: '#fff', 
+                    color: theme.colors.text, 
                     backgroundColor: 'transparent',
                     borderWidth: 0,
                     margin: 0,
@@ -498,7 +498,7 @@ const DateSelector: React.FC<{
             </View>
             
             {/* Períodos pré-definidos */}
-            <Text style={{ color: '#fff', fontSize: 14, marginBottom: 8 }}>Períodos rápidos:</Text>
+            <Text style={{ color: theme.colors.text, fontSize: 14, marginBottom: 8 }}>Períodos rápidos:</Text>
             {presetRanges.map((range, index) => (
               <TouchableOpacity
                 key={index}
@@ -508,13 +508,13 @@ const DateSelector: React.FC<{
                   setTempEndDate(formatDateForInput(range.end));
                 }}
                 style={{
-                  backgroundColor: '#4A5568',
+                  backgroundColor: theme.colors.surface,
                   padding: 12,
                   borderRadius: 8,
                   marginBottom: 8
                 }}
               >
-                <Text style={{ color: '#fff', textAlign: 'center' }}>{range.label}</Text>
+                <Text style={{ color: theme.colors.textInverse, textAlign: 'center' }}>{range.label}</Text>
               </TouchableOpacity>
             ))}
             
@@ -522,27 +522,27 @@ const DateSelector: React.FC<{
               <TouchableOpacity
                 onPress={() => setShowModal(false)}
                 style={{
-                  backgroundColor: '#E53E3E',
+                  backgroundColor: theme.colors.error,
                   padding: 12,
                   borderRadius: 8,
                   flex: 1,
                   marginRight: 8
                 }}
               >
-                <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Cancelar</Text>
+                <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Cancelar</Text>
               </TouchableOpacity>
               
               <TouchableOpacity
                 onPress={handleSave}
                 style={{
-                  backgroundColor: '#00BFFF',
+                  backgroundColor: theme.colors.primary,
                   padding: 12,
                   borderRadius: 8,
                   flex: 1,
                   marginLeft: 8
                 }}
               >
-                <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Aplicar</Text>
+                <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Aplicar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -594,18 +594,18 @@ const ProductionSelector: React.FC<{
       <Modal visible={showModal} transparent animationType="fade">
         <View style={{
           flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: theme.colors.overlay,
           justifyContent: 'center',
           alignItems: 'center'
         }}>
           <View style={{
-            backgroundColor: '#4A5568',
+            backgroundColor: theme.colors.surfaceElevated,
             borderRadius: 12,
             padding: 20,
             width: '80%',
             maxHeight: '70%'
           }}>
-            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
+            <Text style={{ color: theme.colors.text, fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
               Todo(s)
             </Text>
             
@@ -615,13 +615,13 @@ const ProductionSelector: React.FC<{
                 setShowModal(false);
               }}
               style={{
-                backgroundColor: selectedLineId === null ? '#00BFFF' : '#2D3748',
+                backgroundColor: selectedLineId === null ? theme.colors.primary : theme.colors.surface,
                 padding: 12,
                 borderRadius: 8,
                 marginBottom: 8
               }}
             >
-              <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Todo(s)</Text>
+              <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Todo(s)</Text>
             </TouchableOpacity>
             
             <ScrollView style={{ maxHeight: 200 }}>
@@ -633,13 +633,13 @@ const ProductionSelector: React.FC<{
                     setShowModal(false);
                   }}
                   style={{
-                    backgroundColor: selectedLineId === line.id ? '#00BFFF' : '#2D3748',
+                    backgroundColor: selectedLineId === line.id ? theme.colors.primary : theme.colors.surface,
                     padding: 12,
                     borderRadius: 8,
                     marginBottom: 8
                   }}
                 >
-                  <Text style={{ color: '#fff', textAlign: 'center' }}>{line.name} {line.code}</Text>
+                  <Text style={{ color: theme.colors.textInverse, textAlign: 'center' }}>{line.name} {line.code}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -647,13 +647,13 @@ const ProductionSelector: React.FC<{
             <TouchableOpacity
               onPress={() => setShowModal(false)}
               style={{
-                backgroundColor: '#E53E3E',
+                backgroundColor: theme.colors.error,
                 padding: 12,
                 borderRadius: 8,
                 marginTop: 16
               }}
             >
-              <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Fechar</Text>
+              <Text style={{ color: theme.colors.textInverse, textAlign: 'center', fontWeight: 'bold' }}>Fechar</Text>
             </TouchableOpacity>
           </View>
         </View>
