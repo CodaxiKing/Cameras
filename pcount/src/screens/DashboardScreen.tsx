@@ -252,7 +252,6 @@ const StatCard: React.FC<{
         <View style={{
           backgroundColor: accentColor,
           borderRadius: theme.borderRadius.sm,
-          padding: iconPadding,
           width: iconSize,
           height: iconSize,
           justifyContent: 'center',
