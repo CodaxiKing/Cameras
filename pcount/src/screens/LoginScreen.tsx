@@ -49,11 +49,6 @@ const FormContainer = styled.View`
   background-color: ${theme.colors.white};
   border-radius: ${theme.borderRadius['3xl']}px;
   padding: ${theme.spacing['2xl']}px;
-  shadow-color: ${theme.colors.shadow};
-  shadow-offset: 0px 10px;
-  shadow-opacity: 0.3;
-  shadow-radius: 20px;
-  elevation: 15;
 `;
 
 const InputWrapper = styled.View`
