@@ -221,7 +221,7 @@ const StatCard: React.FC<{
       borderRadius: theme.borderRadius.xl,
       padding: cardPadding,
       flex: 1,
-      marginHorizontal: getResponsiveCardSpacing(width),
+      marginHorizontal: 0,
       shadowColor: theme.colors.shadow,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -1298,9 +1298,12 @@ export const DashboardScreen: React.FC = () => {
       <DashboardHeader onLogout={handleLogout} />
       
       <ScrollView 
-        style={{ padding: getResponsivePadding(width) }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: theme.spacing.xl }}
+        contentContainerStyle={{ 
+          paddingBottom: theme.spacing.xl,
+          paddingHorizontal: getResponsivePadding(width),
+          paddingTop: getResponsivePadding(width)
+        }}
       >
         <DateSelector
           startDate={startDate}
@@ -1315,10 +1318,10 @@ export const DashboardScreen: React.FC = () => {
         />
         
         <Text style={{ 
-          fontSize: isSmallScreen ? 16 : 18, 
+          fontSize: isSmallScreen ? 16 : isMediumScreen ? 18 : 20, 
           fontWeight: 'bold', 
           color: theme.colors.text, 
-          marginBottom: isSmallScreen ? 12 : 16,
+          marginBottom: getResponsivePadding(width),
           textAlign: 'center',
           paddingHorizontal: theme.spacing.sm
         }}>
@@ -1333,7 +1336,7 @@ export const DashboardScreen: React.FC = () => {
             <View style={{ marginBottom: theme.spacing.sm }}>
               <StatCard
                 title="Hora(s)"
-                value={stats.operationHours}
+                value={`${stats.operationHours}`}
                 subtitle="Operação"
                 icon="schedule"
                 accentColor="#f59e0b"
@@ -1342,16 +1345,56 @@ export const DashboardScreen: React.FC = () => {
             
             {/* Dois cartões em linha */}
             <View style={{ 
-              flexDirection: 'row', 
-              justifyContent: 'space-between'
+              flexDirection: 'row'
             }}>
+              <View style={{ flex: 1, marginRight: getResponsiveCardSpacing(width) / 2 }}>
+                <StatCard
+                  title="Hora(s)"
+                  value={`${stats.productiveHours}`}
+                  subtitle="Produtivas"
+                  icon="warning"
+                  accentColor="#ef4444"
+                />
+              </View>
+              <View style={{ flex: 1, marginLeft: getResponsiveCardSpacing(width) / 2 }}>
+                <StatCard
+                  title="Produção"
+                  value={`${stats.avgProduction}`}
+                  subtitle="Média / Hr"
+                  icon="trending-up"
+                  accentColor="#06b6d4"
+                />
+              </View>
+            </View>
+          </View>
+        ) : (
+          // Layout horizontal tradicional para telas médias e grandes
+          <View style={{ 
+            flexDirection: 'row', 
+            marginBottom: theme.spacing.lg,
+            paddingHorizontal: theme.spacing.xs
+          }}>
+            <View style={{ flex: 1, marginRight: getResponsiveCardSpacing(width) }}>
               <StatCard
                 title="Hora(s)"
-                value={stats.productiveHours}
+                value={`${stats.operationHours}`}
+                subtitle="Operação"
+                icon="schedule"
+                accentColor="#f59e0b"
+              />
+            </View>
+            
+            <View style={{ flex: 1, marginHorizontal: getResponsiveCardSpacing(width) }}>
+              <StatCard
+                title="Hora(s)"
+                value={`${stats.productiveHours}`}
                 subtitle="Produtivas"
                 icon="warning"
                 accentColor="#ef4444"
               />
+            </View>
+            
+            <View style={{ flex: 1, marginLeft: getResponsiveCardSpacing(width) }}>
               <StatCard
                 title="Produção"
                 value={`${stats.avgProduction}`}
@@ -1360,38 +1403,6 @@ export const DashboardScreen: React.FC = () => {
                 accentColor="#06b6d4"
               />
             </View>
-          </View>
-        ) : (
-          // Layout horizontal tradicional para telas médias e grandes
-          <View style={{ 
-            flexDirection: 'row', 
-            justifyContent: 'space-between', 
-            marginBottom: theme.spacing.lg,
-            paddingHorizontal: theme.spacing.xs
-          }}>
-            <StatCard
-              title="Hora(s)"
-              value={stats.operationHours}
-              subtitle="Operação"
-              icon="schedule"
-              accentColor="#f59e0b"
-            />
-            
-            <StatCard
-              title="Hora(s)"
-              value={stats.productiveHours}
-              subtitle="Produtivas"
-              icon="warning"
-              accentColor="#ef4444"
-            />
-            
-            <StatCard
-              title="Produção"
-              value={`${stats.avgProduction}`}
-              subtitle="Média / Hr"
-              icon="trending-up"
-              accentColor="#06b6d4"
-            />
           </View>
         )}
         
