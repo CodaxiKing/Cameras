@@ -68,17 +68,19 @@ const TotalProducedCard: React.FC<{
       borderRadius: theme.borderRadius['2xl'],
       padding: isSmallScreen ? theme.spacing.lg : theme.spacing.xl,
       marginVertical: theme.spacing.md,
-      shadowColor: theme.colors.shadow,
-      shadowOffset: { width: 0, height: 4 },
+      shadowColor: 'rgba(0, 0, 0, 0.08)',
+      shadowOffset: { width: 0, height: 8 },
       shadowOpacity: 0.15,
-      shadowRadius: 12,
-      elevation: 6,
+      shadowRadius: 24,
+      elevation: 12,
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      borderWidth: 1,
+      borderColor: 'rgba(255, 255, 255, 0.8)'
     }}>
-      {/* Efeito de gradiente de fundo */}
+      {/* Efeito de gradiente de fundo melhorado */}
       <LinearGradient
-        colors={['rgba(6, 182, 212, 0.05)', 'rgba(6, 182, 212, 0.02)']}
+        colors={['rgba(103, 126, 234, 0.08)', 'rgba(118, 75, 162, 0.05)', 'rgba(245, 87, 108, 0.03)']}
         style={{
           position: 'absolute',
           top: 0,
@@ -87,6 +89,18 @@ const TotalProducedCard: React.FC<{
           bottom: 0
         }}
       />
+      
+      {/* Elemento decorativo no canto */}
+      <View style={{
+        position: 'absolute',
+        top: -20,
+        right: -20,
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: 'rgba(103, 126, 234, 0.1)',
+        opacity: 0.6
+      }} />
       
       {/* Título */}
       <Text style={{
@@ -218,25 +232,53 @@ const StatCard: React.FC<{
   return (
     <View style={{
       backgroundColor: backgroundColor,
-      borderRadius: theme.borderRadius.xl,
-      padding: cardPadding,
+      borderRadius: theme.borderRadius['2xl'],
+      padding: cardPadding + 4,
       flex: 1,
       marginHorizontal: 0,
-      shadowColor: theme.colors.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 3,
-      borderLeftWidth: 4,
-      borderLeftColor: accentColor,
-      minHeight: isSmallScreen ? 70 : 80,
-      maxWidth: isLargeScreen ? 180 : undefined // Limite máximo em telas grandes
+      shadowColor: 'rgba(0, 0, 0, 0.08)',
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.15,
+      shadowRadius: 16,
+      elevation: 8,
+      borderWidth: 1,
+      borderColor: 'rgba(255, 255, 255, 0.8)',
+      minHeight: isSmallScreen ? 85 : 95,
+      maxWidth: isLargeScreen ? 180 : undefined,
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Gradiente de fundo sutil */}
+      <LinearGradient
+        colors={[`${accentColor}08`, `${accentColor}03`, 'transparent']}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0
+        }}
+      />
+      
+      {/* Elemento decorativo */}
+      <View style={{
+        position: 'absolute',
+        top: -15,
+        right: -15,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: `${accentColor}15`,
+        opacity: 0.7
+      }} />
+      
       <View style={{ 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'flex-start',
-        marginBottom: theme.spacing.xs
+        marginBottom: theme.spacing.sm,
+        position: 'relative',
+        zIndex: 1
       }}>
         <Text 
           numberOfLines={1}
@@ -453,80 +495,121 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
   );
 };
 
-// Componente do header modernizado
+// Componente do header modernizado com design premium
 const DashboardHeader: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   return (
-    <LinearGradient
-      colors={['#0ea5e9', '#3b82f6', '#6366f1']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={{
-        paddingTop: 50,
-        paddingBottom: 24,
-        paddingHorizontal: theme.spacing.lg,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        shadowColor: theme.colors.shadow,
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.2,
-        shadowRadius: 16,
-        elevation: 10
-      }}
-    >
-      {/* Logo VITON */}
+    <View style={{ position: 'relative' }}>
+      {/* Elementos decorativos de fundo */}
       <View style={{
-        backgroundColor: '#fbbf24',
-        borderRadius: theme.borderRadius.xl,
-        width: 58,
-        height: 42,
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 5
-      }}>
-        <Text style={{ 
-          fontSize: theme.fontSizes.xs, 
-          fontWeight: '900', 
-          color: '#000',
-          letterSpacing: 0.8
-        }}>VITON</Text>
-      </View>
+        position: 'absolute',
+        top: 20,
+        right: -30,
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        opacity: 0.7
+      }} />
+      <View style={{
+        position: 'absolute',
+        bottom: -20,
+        left: -40,
+        width: 160,
+        height: 160,
+        borderRadius: 80,
+        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        opacity: 0.5
+      }} />
       
-      {/* Logo PCOUNT */}
-      <Text style={{
-        fontSize: theme.fontSizes['3xl'],
-        fontWeight: '900',
-        color: theme.colors.textInverse,
-        textAlign: 'center',
-        flex: 1,
-        letterSpacing: -0.5,
-        marginHorizontal: theme.spacing.lg
-      }}>PCOUNT</Text>
-      
-      {/* Botão Power */}
-      <TouchableOpacity
-        onPress={onLogout}
+      <LinearGradient
+        colors={['#667eea', '#764ba2', '#f093fb', '#f5576c']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={{
-          backgroundColor: 'rgba(30, 41, 59, 0.8)',
-          borderRadius: theme.borderRadius.xl,
-          width: 42,
-          height: 42,
-          justifyContent: 'center',
+          paddingTop: 50,
+          paddingBottom: 32,
+          paddingHorizontal: theme.spacing.lg,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 3 },
+          shadowColor: 'rgba(0, 0, 0, 0.25)',
+          shadowOffset: { width: 0, height: 8 },
           shadowOpacity: 0.3,
-          shadowRadius: 6,
-          elevation: 5
+          shadowRadius: 20,
+          elevation: 15
         }}
       >
-        <MaterialIcons name="power-settings-new" size={20} color={theme.colors.textInverse} />
-      </TouchableOpacity>
-    </LinearGradient>
+        {/* Logo VITON com design aprimorado */}
+        <View style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: theme.borderRadius['2xl'],
+          width: 68,
+          height: 48,
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowColor: 'rgba(0, 0, 0, 0.2)',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.3,
+          shadowRadius: 12,
+          elevation: 8,
+          borderWidth: 2,
+          borderColor: 'rgba(255, 255, 255, 0.3)'
+        }}>
+          <Text style={{ 
+            fontSize: theme.fontSizes.xs + 1, 
+            fontWeight: '900', 
+            color: '#1f2937',
+            letterSpacing: 0.8,
+            textShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)'
+          }}>VITON</Text>
+        </View>
+        
+        {/* Logo PCOUNT com melhorias */}
+        <View style={{ 
+          flex: 1, 
+          alignItems: 'center',
+          marginHorizontal: theme.spacing.lg
+        }}>
+          <Text style={{
+            fontSize: theme.fontSizes['3xl'] + 4,
+            fontWeight: '900',
+            color: theme.colors.textInverse,
+            textAlign: 'center',
+            letterSpacing: -0.5,
+            textShadow: '0px 3px 6px rgba(0, 0, 0, 0.3)'
+          }}>PCOUNT</Text>
+          <View style={{
+            width: 40,
+            height: 2,
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            marginTop: 4,
+            borderRadius: 1
+          }} />
+        </View>
+        
+        {/* Botão Power modernizado */}
+        <TouchableOpacity
+          onPress={onLogout}
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.15)',
+            borderRadius: theme.borderRadius['2xl'],
+            width: 48,
+            height: 48,
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 12,
+            elevation: 8,
+            borderWidth: 2,
+            borderColor: 'rgba(255, 255, 255, 0.2)'
+          }}
+        >
+          <MaterialIcons name="power-settings-new" size={22} color={theme.colors.textInverse} />
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
   );
 };
 
