@@ -110,25 +110,21 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         
         <FormContainer>
           <InputWrapper>
-            <InputIcon>👤</InputIcon>
             <Input
               placeholder="Digite seu e-mail"
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
               keyboardType="email-address"
-              style={{ paddingLeft: 50 }}
             />
           </InputWrapper>
           
           <InputWrapper>
-            <InputIcon>🔒</InputIcon>
             <Input
               placeholder="Digite sua senha"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
-              style={{ paddingLeft: 50 }}
             />
           </InputWrapper>
           
