@@ -25,6 +25,156 @@ import { theme } from '../theme';
 
 const { width } = Dimensions.get('window');
 
+// Componente de cartão do Total Produzido com design modernizado
+const TotalProducedCard: React.FC<{ 
+  value: number; 
+  title: string;
+  subtitle?: string;
+}> = ({ value, title, subtitle }) => {
+  // Garantir que o valor seja positivo
+  const safeValue = Math.max(0, value);
+  
+  // Definir os níveis e cores (baseado na imagem de referência)
+  const levels = [
+    { threshold: 4800, color: '#dc2626', label: '4800' },
+    { threshold: 6600, color: '#ea580c', label: '6600' },
+    { threshold: 8400, color: '#65a30d', label: '8400' },
+    { threshold: 10200, color: '#16a34a', label: '10200' },
+    { threshold: 13000, color: '#0891b2', label: '13000' }
+  ];
+  
+  // Determinar qual nível foi atingido
+  const currentLevel = levels.reduce((prev, curr) => 
+    safeValue >= curr.threshold ? curr : prev, 
+    levels[0]
+  );
+  
+  return (
+    <View style={{
+      backgroundColor: '#ffffff',
+      borderRadius: theme.borderRadius['2xl'],
+      padding: theme.spacing.xl,
+      marginVertical: theme.spacing.md,
+      shadowColor: theme.colors.shadow,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 12,
+      elevation: 6,
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Efeito de gradiente de fundo */}
+      <LinearGradient
+        colors={['rgba(6, 182, 212, 0.05)', 'rgba(6, 182, 212, 0.02)']}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0
+        }}
+      />
+      
+      {/* Título */}
+      <Text style={{
+        fontSize: theme.fontSizes.sm,
+        fontWeight: '700',
+        color: theme.colors.text,
+        textAlign: 'center',
+        marginBottom: theme.spacing.lg,
+        letterSpacing: 1,
+        textTransform: 'uppercase'
+      }}>
+        {title}
+      </Text>
+      
+      {/* Layout do conteúdo principal */}
+      <View style={{ alignItems: 'center' }}>
+        {/* Círculo visual com indicador de progresso */}
+        <View style={{
+          width: 180,
+          height: 180,
+          borderRadius: 90,
+          backgroundColor: '#f8fafc',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: theme.spacing.lg,
+          borderWidth: 8,
+          borderColor: currentLevel.color,
+          position: 'relative'
+        }}>
+          {/* Valor principal */}
+          <Text style={{
+            fontSize: 36,
+            fontWeight: '900',
+            color: theme.colors.text,
+            textAlign: 'center'
+          }}>
+            {safeValue.toLocaleString('pt-BR')}
+          </Text>
+          
+          {/* Indicador pequeno do nível atual */}
+          <View style={{
+            position: 'absolute',
+            top: -12,
+            right: -12,
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            backgroundColor: currentLevel.color,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <MaterialIcons name="trending-up" size={14} color="#ffffff" />
+          </View>
+        </View>
+        
+        {/* Legend horizontal */}
+        <View style={{ 
+          flexDirection: 'row', 
+          flexWrap: 'wrap', 
+          justifyContent: 'center',
+          marginBottom: theme.spacing.md
+        }}>
+          {levels.map((level, index) => (
+            <View key={index} style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: theme.spacing.xs,
+              marginBottom: theme.spacing.xs,
+              backgroundColor: safeValue >= level.threshold ? level.color : '#f1f5f9',
+              paddingHorizontal: theme.spacing.sm,
+              paddingVertical: 4,
+              borderRadius: theme.borderRadius.md,
+              opacity: safeValue >= level.threshold ? 1 : 0.6
+            }}>
+              <Text style={{
+                fontSize: theme.fontSizes.xs,
+                color: safeValue >= level.threshold ? '#ffffff' : theme.colors.text,
+                fontWeight: '700'
+              }}>
+                {level.label}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
+      
+      {subtitle && (
+        <Text style={{
+          fontSize: theme.fontSizes.xs,
+          color: theme.colors.textSecondary,
+          textAlign: 'center',
+          fontWeight: '500',
+          marginTop: theme.spacing.sm
+        }}>
+          {subtitle}
+        </Text>
+      )}
+    </View>
+  );
+};
+
 // Componente de cartão de estatística modernizado
 const StatCard: React.FC<{
   title: string;
@@ -97,129 +247,166 @@ const StatCard: React.FC<{
   );
 };
 
-// Componente de gráfico de barras personalizado
+// Componente de gráfico de barras modernizado para mobile
 const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
       <View style={{ 
         alignItems: 'center', 
         marginVertical: theme.spacing.lg, 
-        height: 200, 
+        height: 160, 
         justifyContent: 'center',
-        backgroundColor: theme.colors.surfaceSecondary,
+        backgroundColor: '#f8fafc',
         borderRadius: theme.borderRadius.xl,
-        padding: theme.spacing.xl
+        padding: theme.spacing.lg,
+        borderWidth: 1,
+        borderColor: '#e2e8f0'
       }}>
+        <MaterialIcons name="equalizer" size={32} color={theme.colors.textSecondary} />
         <Text style={{ 
           color: theme.colors.textSecondary, 
           textAlign: 'center',
-          fontSize: theme.fontSizes.base,
-          fontWeight: '500'
+          fontSize: theme.fontSizes.sm,
+          fontWeight: '500',
+          marginTop: theme.spacing.sm
         }}>
-          📊 Nenhum dado de produção disponível
+          Nenhum dado disponível
         </Text>
       </View>
     );
   }
 
-  const chartWidth = width - 96;
-  const chartHeight = 200;
-  const maxValue = Math.max(...data.map(d => d.value));
-  const barWidth = (chartWidth - 80) / data.length;
-  const padding = { top: 20, right: 20, bottom: 40, left: 60 };
+  // Tamanho responsivo e adaptativo para diferentes tamanhos de tela
+  const baseChartWidth = Math.min(width - 40, 480);
+  const chartHeight = 140;
+  const maxValue = Math.max(...data.map(d => d.value), 1);
+  const padding = { top: 20, right: 16, bottom: 30, left: 16 };
+  
+  // Calcular largura das barras para evitar overflow
+  const availableWidth = baseChartWidth - padding.left - padding.right;
+  const barGroupWidth = availableWidth / data.length;
+  const actualBarWidth = Math.min(barGroupWidth * 0.7, 28); // Máximo 28px por barra
+  const showLabels = barGroupWidth >= 14; // Só mostrar labels se houver espaço
 
   return (
-    <View style={{ alignItems: 'center', marginVertical: 16 }}>
-      <Svg width={chartWidth} height={chartHeight + padding.top + padding.bottom}>
-        {/* Grid lines */}
-        {[0, 1, 2, 3, 4].map((i) => {
-          const y = padding.top + (i * chartHeight) / 4;
-          const value = Math.round(maxValue - (i * maxValue) / 4);
-          return (
-            <G key={i}>
+    <View style={{ marginVertical: theme.spacing.md, alignItems: 'center' }}>
+      <View style={{ alignItems: 'center' }}>
+        <Svg width={baseChartWidth} height={chartHeight + padding.top + padding.bottom}>
+          {/* Background sutil */}
+          <Rect
+            x={0}
+            y={0}
+            width={baseChartWidth}
+            height={chartHeight + padding.top + padding.bottom}
+            fill="#fafbfc"
+            rx={8}
+          />
+          
+          {/* Grid lines horizontais sutis */}
+          {[1, 2, 3].map((i) => {
+            const y = padding.top + (i * chartHeight) / 4;
+            return (
               <Line
+                key={i}
                 x1={padding.left}
                 y1={y}
-                x2={chartWidth - padding.right}
+                x2={baseChartWidth - padding.right}
                 y2={y}
-                stroke={theme.colors.border}
+                stroke="#e5e7eb"
                 strokeWidth={0.5}
-                opacity={0.5}
+                opacity={0.7}
               />
-              <SvgText
-                x={padding.left - 10}
-                y={y + 3}
-                fontSize="10"
-                fill={theme.colors.textSecondary}
-                textAnchor="end"
-              >
-                {value}
-              </SvgText>
-            </G>
-          );
-        })}
+            );
+          })}
 
-        {/* Barras */}
-        {data.map((item, index) => {
-          const barHeight = (item.value / maxValue) * chartHeight;
-          const x = padding.left + index * barWidth + barWidth * 0.1;
-          const y = padding.top + chartHeight - barHeight;
-          
-          return (
-            <G key={index}>
-              <Rect
-                x={x}
-                y={y}
-                width={barWidth * 0.8}
-                height={barHeight}
-                fill={theme.colors.accent}
-                opacity={0.9}
-                rx={2}
-              />
-              {/* Valor da quantidade em cima da barra */}
-              <SvgText
-                x={x + (barWidth * 0.4)}
-                y={y - 8}
-                fontSize="10"
-                fill={theme.colors.text}
-                textAnchor="middle"
-                fontWeight="bold"
-              >
-                {item.value}
-              </SvgText>
-              <SvgText
-                x={x + (barWidth * 0.4)}
-                y={padding.top + chartHeight + 15}
-                fontSize="9"
-                fill={theme.colors.textSecondary}
-                textAnchor="middle"
-              >
-                {item.hour.split(':')[0]}h
-              </SvgText>
-            </G>
-          );
-        })}
+          {/* Barras com gradiente e estilo moderno */}
+          {data.map((item, index) => {
+            const barHeight = Math.max((item.value / maxValue) * chartHeight, 4);
+            const x = padding.left + index * barGroupWidth + (barGroupWidth - actualBarWidth) / 2;
+            const y = padding.top + chartHeight - barHeight;
+            
+            return (
+              <G key={index}>
+                {/* Barra principal */}
+                <Rect
+                  x={x}
+                  y={y}
+                  width={actualBarWidth}
+                  height={barHeight}
+                  fill="#3b82f6"
+                  rx={Math.min(actualBarWidth / 8, 4)}
+                  ry={Math.min(actualBarWidth / 8, 4)}
+                />
+                
+                {/* Efeito de gradiente/highlight */}
+                {actualBarWidth >= 8 && (
+                  <Rect
+                    x={x + 2}
+                    y={y}
+                    width={actualBarWidth - 4}
+                    height={Math.max(barHeight * 0.3, 2)}
+                    fill="#60a5fa"
+                    rx={2}
+                    ry={2}
+                    opacity={0.8}
+                  />
+                )}
+                
+                {/* Valor em cima da barra (apenas se houver espaço) */}
+                {barHeight > 20 && showLabels && item.value > 0 && (
+                  <SvgText
+                    x={x + actualBarWidth / 2}
+                    y={y - 6}
+                    fontSize="9"
+                    fill={theme.colors.text}
+                    textAnchor="middle"
+                    fontWeight="700"
+                  >
+                    {item.value}
+                  </SvgText>
+                )}
+                
+                {/* Label do horário */}
+                {showLabels && (
+                  <SvgText
+                    x={x + actualBarWidth / 2}
+                    y={padding.top + chartHeight + 18}
+                    fontSize="9"
+                    fill={theme.colors.textSecondary}
+                    textAnchor="middle"
+                    fontWeight="600"
+                  >
+                    {item.hour.split(':')[0]}h
+                  </SvgText>
+                )}
+              </G>
+            );
+          })}
 
-        {/* Eixo X */}
-        <Line
-          x1={padding.left}
-          y1={padding.top + chartHeight}
-          x2={chartWidth - padding.right}
-          y2={padding.top + chartHeight}
-          stroke={theme.colors.border}
-          strokeWidth={1}
-        />
-
-        {/* Eixo Y */}
-        <Line
-          x1={padding.left}
-          y1={padding.top}
-          x2={padding.left}
-          y2={padding.top + chartHeight}
-          stroke={theme.colors.border}
-          strokeWidth={1}
-        />
-      </Svg>
+          {/* Linha base sutil */}
+          <Line
+            x1={padding.left}
+            y1={padding.top + chartHeight}
+            x2={baseChartWidth - padding.right}
+            y2={padding.top + chartHeight}
+            stroke="#d1d5db"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+          />
+        </Svg>
+      </View>
+      
+      {/* Valor máximo para referência */}
+      {maxValue > 0 && (
+        <Text style={{
+          fontSize: theme.fontSizes.xs,
+          color: theme.colors.textSecondary,
+          marginTop: theme.spacing.sm,
+          textAlign: 'center'
+        }}>
+          Máximo: {maxValue} unidades
+        </Text>
+      )}
     </View>
   );
 };
@@ -895,25 +1082,12 @@ export const DashboardScreen: React.FC = () => {
           />
         </View>
         
-        <TouchableOpacity
-          onPress={() => {
-            // TODO: Navegar para tela de detalhes da produção
-            console.log('Navegar para detalhes da produção');
-          }}
-          activeOpacity={0.7}
-          accessibilityRole="button"
-          accessibilityLabel="Ver detalhes da produção"
-        >
-          <FeaturedCard>
-            <FeaturedCardAccent />
-            <FeaturedCardIcon>
-              <MaterialIcons name="bar-chart" size={20} color={theme.colors.white} />
-            </FeaturedCardIcon>
-            <FeaturedCardTitle>Total Produzido</FeaturedCardTitle>
-            <FeaturedCardValue>{stats.totalProduced.toLocaleString()}</FeaturedCardValue>
-            <FeaturedCardSubtitle>Unidades produzidas no período</FeaturedCardSubtitle>
-          </FeaturedCard>
-        </TouchableOpacity>
+        {/* Cartão do Total Produzido */}
+        <TotalProducedCard
+          value={stats.totalProduced}
+          title="TOTAL PRODUZIDO"
+          subtitle="Unidades produzidas no período"
+        />
         
         <Card style={{ marginTop: 16 }}>
           <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 16, color: theme.colors.text }}>TOTAL PRODUZIDO / HORA</Text>
