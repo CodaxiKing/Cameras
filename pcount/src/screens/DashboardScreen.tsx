@@ -25,6 +25,78 @@ import { theme } from '../theme';
 
 const { width } = Dimensions.get('window');
 
+// Componente de cartão de estatística modernizado
+const StatCard: React.FC<{
+  title: string;
+  value: string;
+  subtitle: string;
+  icon: string;
+  accentColor: string;
+  backgroundColor?: string;
+}> = ({ title, value, subtitle, icon, accentColor, backgroundColor = '#ffffff' }) => {
+  return (
+    <View style={{
+      backgroundColor: backgroundColor,
+      borderRadius: theme.borderRadius.xl,
+      padding: theme.spacing.md,
+      flex: 1,
+      marginHorizontal: theme.spacing.xs,
+      shadowColor: theme.colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+      borderLeftWidth: 4,
+      borderLeftColor: accentColor,
+      minHeight: 80
+    }}>
+      <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start',
+        marginBottom: theme.spacing.xs
+      }}>
+        <Text style={{ 
+          fontSize: theme.fontSizes.xs, 
+          color: theme.colors.textSecondary,
+          fontWeight: '600',
+          flex: 1
+        }}>
+          {title}
+        </Text>
+        <View style={{
+          backgroundColor: accentColor,
+          borderRadius: theme.borderRadius.sm,
+          padding: 6,
+          width: 28,
+          height: 28,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <MaterialIcons name={icon as any} size={16} color="#ffffff" />
+        </View>
+      </View>
+      
+      <Text style={{ 
+        fontSize: theme.fontSizes.xl, 
+        fontWeight: '800', 
+        color: theme.colors.text,
+        marginBottom: 2
+      }}>
+        {value}
+      </Text>
+      
+      <Text style={{ 
+        fontSize: theme.fontSizes.xs, 
+        color: theme.colors.textSecondary,
+        fontWeight: '500'
+      }}>
+        {subtitle}
+      </Text>
+    </View>
+  );
+};
+
 // Componente de gráfico de barras personalizado
 const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ data }) => {
   if (!data || data.length === 0) {
@@ -791,30 +863,36 @@ export const DashboardScreen: React.FC = () => {
           textAlign: 'center'
         }}>Dashboard {selectedLineId ? productionLines?.find(l => l.id === selectedLineId)?.name : ''}</Text>
         
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
-          <Card style={{ flex: 1, marginRight: 8 }}>
-            <Text style={{ fontSize: 12, color: theme.colors.textSecondary }}>Horas</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: theme.colors.warning }}>
-              {stats.operationHours}
-            </Text>
-            <Text style={{ fontSize: 10 }}>Operação</Text>
-          </Card>
+        {/* Cartões de estatísticas modernos */}
+        <View style={{ 
+          flexDirection: 'row', 
+          justifyContent: 'space-between', 
+          marginBottom: theme.spacing.lg,
+          paddingHorizontal: theme.spacing.xs
+        }}>
+          <StatCard
+            title="Hora(s)"
+            value={stats.operationHours}
+            subtitle="Operação"
+            icon="schedule"
+            accentColor="#f59e0b"
+          />
           
-          <Card style={{ flex: 1, marginRight: 8 }}>
-            <Text style={{ fontSize: 12, color: theme.colors.textSecondary }}>Horas</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: theme.colors.error }}>
-              {stats.productiveHours}
-            </Text>
-            <Text style={{ fontSize: 10 }}>Produtivas</Text>
-          </Card>
+          <StatCard
+            title="Hora(s)"
+            value={stats.productiveHours}
+            subtitle="Produtivas"
+            icon="warning"
+            accentColor="#ef4444"
+          />
           
-          <Card style={{ flex: 1 }}>
-            <Text style={{ fontSize: 12, color: theme.colors.textSecondary }}>Produção</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: theme.colors.info }}>
-              {stats.avgProduction}
-            </Text>
-            <Text style={{ fontSize: 10 }}>Média / Hr</Text>
-          </Card>
+          <StatCard
+            title="Produção"
+            value={`${stats.avgProduction}`}
+            subtitle="Média / Hr"
+            icon="trending-up"
+            accentColor="#06b6d4"
+          />
         </View>
         
         <TouchableOpacity
