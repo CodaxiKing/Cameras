@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, ScrollView, Dimensions, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { Svg, Rect, Text as SvgText, Line, G } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useProductionStats, useProductionLines } from '../hooks/useProductions';
 import { useAuth } from '../contexts/AuthContext';
@@ -154,71 +155,77 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
 // Componente do header modernizado
 const DashboardHeader: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   return (
-    <View style={{
-      backgroundColor: theme.colors.primary,
-      paddingTop: 50,
-      paddingBottom: 20,
-      paddingHorizontal: theme.spacing.lg,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      shadowColor: theme.colors.shadow,
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 12,
-      elevation: 8
-    }}>
-      <View style={{
-        backgroundColor: theme.colors.warning,
-        padding: theme.spacing.sm,
-        borderRadius: theme.borderRadius.lg,
-        width: 65,
-        height: 45,
-        justifyContent: 'center',
+    <LinearGradient
+      colors={['#0ea5e9', '#3b82f6', '#6366f1']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{
+        paddingTop: 50,
+        paddingBottom: 24,
+        paddingHorizontal: theme.spacing.lg,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
         shadowColor: theme.colors.shadow,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3
+        shadowRadius: 16,
+        elevation: 10
+      }}
+    >
+      {/* Logo VITON */}
+      <View style={{
+        backgroundColor: '#fbbf24',
+        borderRadius: theme.borderRadius.xl,
+        width: 58,
+        height: 42,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 5
       }}>
         <Text style={{ 
           fontSize: theme.fontSizes.xs, 
-          fontWeight: '800', 
-          color: theme.colors.text,
-          letterSpacing: 0.5
+          fontWeight: '900', 
+          color: '#000',
+          letterSpacing: 0.8
         }}>VITON</Text>
       </View>
       
+      {/* Logo PCOUNT */}
       <Text style={{
         fontSize: theme.fontSizes['3xl'],
-        fontWeight: '800',
+        fontWeight: '900',
         color: theme.colors.textInverse,
         textAlign: 'center',
         flex: 1,
-        letterSpacing: -1
+        letterSpacing: -0.5,
+        marginHorizontal: theme.spacing.lg
       }}>PCOUNT</Text>
       
+      {/* Botão Power */}
       <TouchableOpacity
         onPress={onLogout}
         style={{
-          backgroundColor: theme.colors.overlay,
-          padding: theme.spacing.sm,
-          borderRadius: theme.borderRadius.lg,
-          width: 45,
-          height: 45,
+          backgroundColor: 'rgba(30, 41, 59, 0.8)',
+          borderRadius: theme.borderRadius.xl,
+          width: 42,
+          height: 42,
           justifyContent: 'center',
           alignItems: 'center',
-          shadowColor: theme.colors.shadow,
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.25,
-          shadowRadius: 4,
-          elevation: 4
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 3 },
+          shadowOpacity: 0.3,
+          shadowRadius: 6,
+          elevation: 5
         }}
       >
-        <Text style={{ color: theme.colors.textInverse, fontSize: 20 }}>⏻</Text>
+        <MaterialIcons name="power-settings-new" size={20} color={theme.colors.textInverse} />
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
 
