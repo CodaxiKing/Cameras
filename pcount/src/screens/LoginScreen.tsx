@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { Alert, Text, View, TouchableOpacity } from 'react-native';
+import { Alert, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { theme } from '../theme';
 import styled from 'styled-components/native';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 interface LoginScreenProps {
   navigation: any;
 }
 
 // Styled Components
-const CyanBackground = styled.View`
+const GradientBackground = styled.View`
   flex: 1;
-  background-color: #00bcd4;
 `;
 
 const CurvedOverlay = styled.View`
@@ -21,22 +23,27 @@ const CurvedOverlay = styled.View`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #f5f5f5;
-  border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
-  margin-top: 140px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+  margin-top: ${screenHeight * 0.18}px;
+  shadow-color: #000;
+  shadow-offset: 0px -2px;
+  shadow-opacity: 0.1;
+  shadow-radius: 12px;
+  elevation: 8;
 `;
 
 const LoginCard = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  padding: ${theme.spacing['2xl']}px;
+  padding: ${screenWidth * 0.08}px;
 `;
 
 const LogoContainer = styled.View`
   align-items: center;
-  margin-bottom: ${theme.spacing['2xl']}px;
+  margin-bottom: ${screenHeight * 0.04}px;
 `;
 
 const SubTitle = styled.Text`
@@ -52,62 +59,69 @@ const SubTitle = styled.Text`
 
 const FormContainer = styled.View`
   width: 100%;
-  max-width: 340px;
-  padding: ${theme.spacing['xl']}px 24px;
+  max-width: ${screenWidth * 0.9}px;
+  padding: ${screenHeight * 0.03}px ${screenWidth * 0.06}px;
 `;
 
 const InputWrapper = styled.View`
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: ${screenHeight * 0.024}px;
 `;
 
 const StyledInput = styled.TextInput`
-  background-color: #ffffff;
-  border-width: 2px;
-  border-color: #00bcd4;
-  border-radius: 14px;
-  padding: 18px 18px 18px 55px;
-  font-size: 17px;
-  color: #333;
-  min-height: 56px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-width: 1.5px;
+  border-color: #e0e0e0;
+  border-radius: 16px;
+  padding: ${screenHeight * 0.022}px ${screenWidth * 0.04}px ${screenHeight * 0.022}px ${screenWidth * 0.14}px;
+  font-size: ${screenWidth * 0.045}px;
+  color: #2c3e50;
+  min-height: ${screenHeight * 0.065}px;
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.05;
+  shadow-radius: 8px;
+  elevation: 2;
+  font-weight: 500;
 `;
 
 const InputIconContainer = styled.View`
   position: absolute;
-  left: 18px;
-  top: 18px;
+  left: ${screenWidth * 0.045}px;
+  top: ${screenHeight * 0.022}px;
   z-index: 1;
 `;
 
 const EyeIconContainer = styled.TouchableOpacity`
   position: absolute;
-  right: 18px;
-  top: 18px;
+  right: ${screenWidth * 0.045}px;
+  top: ${screenHeight * 0.018}px;
   z-index: 1;
-  padding: 4px;
+  padding: ${screenWidth * 0.02}px;
+  border-radius: 20px;
 `;
 
 const LoginButton = styled.TouchableOpacity`
-  background-color: #00bcd4;
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 16px;
+  padding: ${screenHeight * 0.02}px;
   align-items: center;
-  margin-top: 24px;
-  min-height: 56px;
+  margin-top: ${screenHeight * 0.03}px;
+  min-height: ${screenHeight * 0.065}px;
   justify-content: center;
-  shadow-color: #00bcd4;
-  shadow-offset: 0px 4px;
-  shadow-opacity: 0.2;
-  shadow-radius: 8px;
-  elevation: 4;
+  shadow-color: #667eea;
+  shadow-offset: 0px 6px;
+  shadow-opacity: 0.25;
+  shadow-radius: 12px;
+  elevation: 6;
 `;
 
 const VersionText = styled.Text`
   position: absolute;
-  bottom: 40px;
+  bottom: ${screenHeight * 0.05}px;
   align-self: center;
-  color: #999;
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: ${screenWidth * 0.035}px;
+  font-weight: 500;
 `;
 
 const InputIcon = styled.Text`
@@ -133,6 +147,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
   const { login } = useAuth();
 
   const handleLogin = async () => {
@@ -149,12 +165,18 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <CyanBackground>
+    <GradientBackground>
+      <LinearGradient
+        colors={['#667eea', '#764ba2', '#f093fb']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ flex: 1 }}
+      >
       <CurvedOverlay />
       <LoginCard>
         {/* Logo Area */}
-        <LogoContainer style={{ marginTop: 40 }}>
-          <View style={{ alignItems: 'center', marginBottom: 50 }}>
+        <LogoContainer style={{ marginTop: screenHeight * 0.05 }}>
+          <View style={{ alignItems: 'center', marginBottom: screenHeight * 0.06 }}>
             {/* Main PCOUNT Logo */}
             <View style={{ 
               flexDirection: 'row', 
@@ -163,44 +185,53 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               marginBottom: 8
             }}>
               <Text style={{
-                fontSize: 52,
+                fontSize: screenWidth * 0.14,
                 fontWeight: '800',
-                color: '#333',
-                letterSpacing: 1
+                color: 'rgba(255, 255, 255, 0.95)',
+                letterSpacing: 1,
+                textShadowColor: 'rgba(0, 0, 0, 0.2)',
+                textShadowOffset: { width: 0, height: 2 },
+                textShadowRadius: 4
               }}>
                 PC
               </Text>
               <View style={{
-                width: 44,
-                height: 44,
-                borderRadius: 22,
-                backgroundColor: '#00bcd4',
+                width: screenWidth * 0.12,
+                height: screenWidth * 0.12,
+                borderRadius: screenWidth * 0.06,
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginHorizontal: 4,
-                shadowColor: '#00bcd4',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-                shadowRadius: 4,
-                elevation: 3
+                marginHorizontal: screenWidth * 0.01,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.15,
+                shadowRadius: 8,
+                elevation: 6
               }}>
-                <MaterialIcons name="visibility" size={22} color="white" />
+                <MaterialIcons name="visibility" size={screenWidth * 0.06} color="#667eea" />
               </View>
               <Text style={{
-                fontSize: 52,
+                fontSize: screenWidth * 0.14,
                 fontWeight: '800',
-                color: '#333',
-                letterSpacing: 1
+                color: 'rgba(255, 255, 255, 0.95)',
+                letterSpacing: 1,
+                textShadowColor: 'rgba(0, 0, 0, 0.2)',
+                textShadowOffset: { width: 0, height: 2 },
+                textShadowRadius: 4
               }}>
                 UNT
               </Text>
             </View>
             {/* Subtitle */}
             <Text style={{
-              fontSize: 16,
-              color: '#666',
+              fontSize: screenWidth * 0.042,
+              color: 'rgba(255, 255, 255, 0.8)',
               fontWeight: '500',
-              letterSpacing: 0.5
+              letterSpacing: 0.5,
+              textShadowColor: 'rgba(0, 0, 0, 0.1)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2
             }}>
               Sistema de Monitoramento
             </Text>
@@ -210,12 +241,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <FormContainer>
           {/* Form Title */}
           <Text style={{
-            fontSize: 19,
-            color: '#333',
+            fontSize: screenWidth * 0.05,
+            color: '#2c3e50',
             textAlign: 'center',
-            marginBottom: 32,
+            marginBottom: screenHeight * 0.04,
             fontWeight: '600',
-            lineHeight: 26
+            lineHeight: screenWidth * 0.065
           }}>
             Entre com suas credenciais para{'\n'}acessar o sistema.
           </Text>
@@ -224,7 +255,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <InputWrapper>
             <View style={{ position: 'relative' }}>
               <InputIconContainer>
-                <MaterialIcons name="email" size={26} color="#00bcd4" />
+                <MaterialIcons name="email" size={screenWidth * 0.065} color="#667eea" />
               </InputIconContainer>
               <StyledInput
                 placeholder="Digite seu e-mail"
@@ -232,7 +263,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                placeholderTextColor="#999"
+                placeholderTextColor="#a0a0a0"
+                onFocus={() => setEmailFocused(true)}
+                onBlur={() => setEmailFocused(false)}
+                style={emailFocused ? {
+                  borderColor: '#667eea',
+                  borderWidth: 2,
+                  backgroundColor: 'rgba(255, 255, 255, 1)',
+                  shadowOpacity: 0.1
+                } : {}}
               />
             </View>
           </InputWrapper>
@@ -241,20 +280,28 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <InputWrapper>
             <View style={{ position: 'relative' }}>
               <InputIconContainer>
-                <MaterialIcons name="lock" size={26} color="#00bcd4" />
+                <MaterialIcons name="lock" size={screenWidth * 0.065} color="#667eea" />
               </InputIconContainer>
               <StyledInput
                 placeholder="Digite sua senha"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
-                placeholderTextColor="#999"
+                placeholderTextColor="#a0a0a0"
+                onFocus={() => setPasswordFocused(true)}
+                onBlur={() => setPasswordFocused(false)}
+                style={passwordFocused ? {
+                  borderColor: '#667eea',
+                  borderWidth: 2,
+                  backgroundColor: 'rgba(255, 255, 255, 1)',
+                  shadowOpacity: 0.1
+                } : {}}
               />
               <EyeIconContainer onPress={() => setShowPassword(!showPassword)}>
                 <MaterialIcons 
                   name={showPassword ? "visibility" : "visibility-off"} 
-                  size={26} 
-                  color="#00bcd4" 
+                  size={screenWidth * 0.065} 
+                  color="#667eea" 
                 />
               </EyeIconContainer>
             </View>
@@ -262,20 +309,33 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           
           {/* Login Button */}
           <LoginButton onPress={handleLogin}>
-            <Text style={{
-              color: 'white',
-              fontSize: 19,
-              fontWeight: '700',
-              letterSpacing: 0.5
-            }}>
-              Entrar
-            </Text>
+            <LinearGradient
+              colors={['#667eea', '#764ba2']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{
+                flex: 1,
+                borderRadius: 16,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Text style={{
+                color: 'white',
+                fontSize: screenWidth * 0.05,
+                fontWeight: '700',
+                letterSpacing: 0.5
+              }}>
+                Entrar
+              </Text>
+            </LinearGradient>
           </LoginButton>
         </FormContainer>
         
         {/* Version */}
         <VersionText>v2.0.0</VersionText>
       </LoginCard>
-    </CyanBackground>
+      </LinearGradient>
+    </GradientBackground>
   );
 };
