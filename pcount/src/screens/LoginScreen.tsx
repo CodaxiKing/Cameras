@@ -246,7 +246,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             fontSize: Math.max(screenWidth * 0.040, 16),
             color: '#ffffff',
             textAlign: 'center',
-            marginBottom: Math.max(screenHeight * 0.02, 16),
+            marginBottom: Math.max(screenHeight * 0.01, 8),
             fontWeight: '600',
             lineHeight: Math.max(screenWidth * 0.050, 20)
           }}>
