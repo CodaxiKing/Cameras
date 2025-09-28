@@ -348,7 +348,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={{
-                flex: 1,
+                width: '100%',
+                height: '100%',
                 borderRadius: 14,
                 alignItems: 'center',
                 justifyContent: 'center'
