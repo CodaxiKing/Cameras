@@ -22,9 +22,9 @@ const CurvedOverlay = styled.View`
   right: 0;
   bottom: 0;
   background-color: #f5f5f5;
-  border-top-left-radius: 60px;
-  border-top-right-radius: 60px;
-  margin-top: 120px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  margin-top: 140px;
 `;
 
 const LoginCard = styled.View`
@@ -52,45 +52,54 @@ const SubTitle = styled.Text`
 
 const FormContainer = styled.View`
   width: 100%;
-  max-width: 320px;
-  padding: ${theme.spacing['xl']}px;
+  max-width: 340px;
+  padding: ${theme.spacing['xl']}px 24px;
 `;
 
 const InputWrapper = styled.View`
   position: relative;
-  margin-bottom: ${theme.spacing.lg}px;
+  margin-bottom: 20px;
 `;
 
 const StyledInput = styled.TextInput`
   background-color: #ffffff;
   border-width: 2px;
   border-color: #00bcd4;
-  border-radius: 12px;
-  padding: 16px 16px 16px 50px;
-  font-size: 16px;
+  border-radius: 14px;
+  padding: 18px 18px 18px 55px;
+  font-size: 17px;
   color: #333;
+  min-height: 56px;
 `;
 
 const InputIconContainer = styled.View`
   position: absolute;
-  left: 16px;
-  top: 16px;
+  left: 18px;
+  top: 18px;
   z-index: 1;
 `;
 
 const EyeIconContainer = styled.TouchableOpacity`
   position: absolute;
-  right: 16px;
-  top: 16px;
+  right: 18px;
+  top: 18px;
   z-index: 1;
+  padding: 4px;
 `;
 
 const LoginButton = styled.TouchableOpacity`
   background-color: #00bcd4;
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 18px;
   align-items: center;
-  margin-top: ${theme.spacing.lg}px;
+  margin-top: 24px;
+  min-height: 56px;
+  justify-content: center;
+  shadow-color: #00bcd4;
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.2;
+  shadow-radius: 8px;
+  elevation: 4;
 `;
 
 const VersionText = styled.Text`
@@ -144,52 +153,69 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <CurvedOverlay />
       <LoginCard>
         {/* Logo Area */}
-        <LogoContainer style={{ marginTop: 60 }}>
-          <View style={{ alignItems: 'center', marginBottom: 40 }}>
+        <LogoContainer style={{ marginTop: 40 }}>
+          <View style={{ alignItems: 'center', marginBottom: 50 }}>
+            {/* Main PCOUNT Logo */}
             <View style={{ 
               flexDirection: 'row', 
               alignItems: 'center', 
-              justifyContent: 'center' 
+              justifyContent: 'center',
+              marginBottom: 8
             }}>
               <Text style={{
-                fontSize: 48,
-                fontWeight: 'bold',
+                fontSize: 52,
+                fontWeight: '800',
                 color: '#333',
-                letterSpacing: 2
+                letterSpacing: 1
               }}>
                 PC
               </Text>
               <View style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
+                width: 44,
+                height: 44,
+                borderRadius: 22,
                 backgroundColor: '#00bcd4',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginHorizontal: 2
+                marginHorizontal: 4,
+                shadowColor: '#00bcd4',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 4,
+                elevation: 3
               }}>
-                <MaterialIcons name="visibility" size={20} color="white" />
+                <MaterialIcons name="visibility" size={22} color="white" />
               </View>
               <Text style={{
-                fontSize: 48,
-                fontWeight: 'bold',
+                fontSize: 52,
+                fontWeight: '800',
                 color: '#333',
-                letterSpacing: 2
+                letterSpacing: 1
               }}>
                 UNT
               </Text>
             </View>
+            {/* Subtitle */}
+            <Text style={{
+              fontSize: 16,
+              color: '#666',
+              fontWeight: '500',
+              letterSpacing: 0.5
+            }}>
+              Sistema de Monitoramento
+            </Text>
           </View>
         </LogoContainer>
         
         <FormContainer>
           {/* Form Title */}
           <Text style={{
-            fontSize: 18,
+            fontSize: 19,
             color: '#333',
             textAlign: 'center',
-            marginBottom: 40,
-            fontWeight: '500'
+            marginBottom: 32,
+            fontWeight: '600',
+            lineHeight: 26
           }}>
             Entre com suas credenciais para{'\n'}acessar o sistema.
           </Text>
@@ -198,7 +224,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <InputWrapper>
             <View style={{ position: 'relative' }}>
               <InputIconContainer>
-                <MaterialIcons name="email" size={24} color="#00bcd4" />
+                <MaterialIcons name="email" size={26} color="#00bcd4" />
               </InputIconContainer>
               <StyledInput
                 placeholder="Digite seu e-mail"
@@ -215,7 +241,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <InputWrapper>
             <View style={{ position: 'relative' }}>
               <InputIconContainer>
-                <MaterialIcons name="lock" size={24} color="#00bcd4" />
+                <MaterialIcons name="lock" size={26} color="#00bcd4" />
               </InputIconContainer>
               <StyledInput
                 placeholder="Digite sua senha"
@@ -227,7 +253,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <EyeIconContainer onPress={() => setShowPassword(!showPassword)}>
                 <MaterialIcons 
                   name={showPassword ? "visibility" : "visibility-off"} 
-                  size={24} 
+                  size={26} 
                   color="#00bcd4" 
                 />
               </EyeIconContainer>
@@ -238,8 +264,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <LoginButton onPress={handleLogin}>
             <Text style={{
               color: 'white',
-              fontSize: 18,
-              fontWeight: '600'
+              fontSize: 19,
+              fontWeight: '700',
+              letterSpacing: 0.5
             }}>
               Entrar
             </Text>
