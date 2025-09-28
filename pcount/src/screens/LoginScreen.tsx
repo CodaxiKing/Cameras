@@ -182,9 +182,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <GradientBackground>
         <LinearGradient
-          colors={['#4A90E2', '#357ABD', '#2C5F8A']}
+          colors={['#00BFFF', '#87CEEB', '#E0F6FF', '#F0F8FF']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          end={{ x: 0, y: 1 }}
           style={{ flex: 1 }}
         >
           <CurvedOverlay />
