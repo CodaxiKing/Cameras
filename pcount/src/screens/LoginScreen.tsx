@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Alert, Text, View, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
-import {
-  Container,
-  CenteredContainer,
-  Logo,
-  Input,
-  Button,
-  ButtonText,
-} from '../components/StyledComponents';
 import { theme } from '../theme';
 import styled from 'styled-components/native';
 
@@ -18,8 +10,21 @@ interface LoginScreenProps {
 }
 
 // Styled Components
-const GradientBackground = styled(LinearGradient)`
+const CyanBackground = styled.View`
   flex: 1;
+  background-color: #00bcd4;
+`;
+
+const CurvedOverlay = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f5f5f5;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  margin-top: 120px;
 `;
 
 const LoginCard = styled.View`
@@ -47,23 +52,53 @@ const SubTitle = styled.Text`
 
 const FormContainer = styled.View`
   width: 100%;
-  max-width: 400px;
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: ${theme.borderRadius['3xl']}px;
-  padding: ${theme.spacing['2xl']}px;
-  border-width: 1px;
-  border-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  shadow-color: rgba(0, 0, 0, 0.1);
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.15;
-  shadow-radius: 32px;
-  elevation: 8;
+  max-width: 320px;
+  padding: ${theme.spacing['xl']}px;
 `;
 
 const InputWrapper = styled.View`
   position: relative;
-  margin-bottom: ${theme.spacing.md}px;
+  margin-bottom: ${theme.spacing.lg}px;
+`;
+
+const StyledInput = styled.TextInput`
+  background-color: #ffffff;
+  border-width: 2px;
+  border-color: #00bcd4;
+  border-radius: 12px;
+  padding: 16px 16px 16px 50px;
+  font-size: 16px;
+  color: #333;
+`;
+
+const InputIconContainer = styled.View`
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 1;
+`;
+
+const EyeIconContainer = styled.TouchableOpacity`
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 1;
+`;
+
+const LoginButton = styled.TouchableOpacity`
+  background-color: #00bcd4;
+  border-radius: 12px;
+  padding: 16px;
+  align-items: center;
+  margin-top: ${theme.spacing.lg}px;
+`;
+
+const VersionText = styled.Text`
+  position: absolute;
+  bottom: 40px;
+  align-self: center;
+  color: #999;
+  font-size: 14px;
 `;
 
 const InputIcon = styled.Text`
@@ -88,6 +123,7 @@ const WelcomeText = styled.Text`
 export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
   const handleLogin = async () => {
@@ -104,185 +140,115 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <GradientBackground
-      colors={['#667eea', '#764ba2', '#f093fb', '#f5576c']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-      {/* Elementos decorativos de fundo */}
-      <View style={{
-        position: 'absolute',
-        top: 50,
-        right: -50,
-        width: 200,
-        height: 200,
-        borderRadius: 100,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        opacity: 0.7
-      }} />
-      <View style={{
-        position: 'absolute',
-        bottom: 100,
-        left: -80,
-        width: 300,
-        height: 300,
-        borderRadius: 150,
-        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-        opacity: 0.5
-      }} />
-      <View style={{
-        position: 'absolute',
-        top: '30%',
-        left: '80%',
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        backgroundColor: 'rgba(255, 255, 255, 0.12)',
-        opacity: 0.6
-      }} />
+    <CyanBackground>
+      <CurvedOverlay />
       <LoginCard>
-        <LogoContainer>
-          <Logo style={{ 
-            color: theme.colors.textInverse,
-            textShadow: '0px 3px 6px rgba(0, 0, 0, 0.3)',
-            fontSize: theme.fontSizes['4xl'] + 8
-          }}>PCOUNT</Logo>
-          <SubTitle>Sistema de Monitoramento</SubTitle>
-          <View style={{
-            width: 60,
-            height: 3,
-            backgroundColor: theme.colors.textInverse,
-            marginTop: theme.spacing.md,
-            borderRadius: 2,
-            opacity: 0.8
-          }} />
+        {/* Logo Area */}
+        <LogoContainer style={{ marginTop: 60 }}>
+          <View style={{ alignItems: 'center', marginBottom: 40 }}>
+            <View style={{ 
+              flexDirection: 'row', 
+              alignItems: 'center', 
+              justifyContent: 'center' 
+            }}>
+              <Text style={{
+                fontSize: 48,
+                fontWeight: 'bold',
+                color: '#333',
+                letterSpacing: 2
+              }}>
+                PC
+              </Text>
+              <View style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                backgroundColor: '#00bcd4',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: 2
+              }}>
+                <MaterialIcons name="visibility" size={20} color="white" />
+              </View>
+              <Text style={{
+                fontSize: 48,
+                fontWeight: 'bold',
+                color: '#333',
+                letterSpacing: 2
+              }}>
+                UNT
+              </Text>
+            </View>
+          </View>
         </LogoContainer>
         
         <FormContainer>
-          {/* Título do formulário */}
-          <View style={{
-            alignItems: 'center',
-            marginBottom: theme.spacing.xl
+          {/* Form Title */}
+          <Text style={{
+            fontSize: 18,
+            color: '#333',
+            textAlign: 'center',
+            marginBottom: 40,
+            fontWeight: '500'
           }}>
-            <Text style={{
-              fontSize: theme.fontSizes.xl,
-              fontWeight: '800',
-              color: theme.colors.text,
-              textAlign: 'center',
-              marginBottom: theme.spacing.xs,
-              letterSpacing: -0.5
-            }}>Bem-vindo de volta!</Text>
-            <Text style={{
-              fontSize: theme.fontSizes.sm,
-              color: theme.colors.textSecondary,
-              textAlign: 'center',
-              fontWeight: '500'
-            }}>Faça login para continuar</Text>
-          </View>
+            Entre com suas credenciais para{'\n'}acessar o sistema.
+          </Text>
           
+          {/* Email Input */}
           <InputWrapper>
-            <View style={{
-              position: 'relative',
-              marginBottom: theme.spacing.xs
-            }}>
-              <Text style={{
-                fontSize: theme.fontSizes.xs,
-                color: theme.colors.textSecondary,
-                fontWeight: '600',
-                marginBottom: theme.spacing.xs,
-                textTransform: 'uppercase',
-                letterSpacing: 0.5
-              }}>E-mail</Text>
-              <Input
+            <View style={{ position: 'relative' }}>
+              <InputIconContainer>
+                <MaterialIcons name="email" size={24} color="#00bcd4" />
+              </InputIconContainer>
+              <StyledInput
                 placeholder="Digite seu e-mail"
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                style={{
-                  backgroundColor: 'rgba(248, 250, 252, 0.8)',
-                  borderColor: email ? theme.colors.primary : theme.colors.border,
-                  borderWidth: 2,
-                  fontSize: theme.fontSizes.base,
-                  fontWeight: '500'
-                }}
+                placeholderTextColor="#999"
               />
             </View>
           </InputWrapper>
           
+          {/* Password Input */}
           <InputWrapper>
-            <View style={{
-              position: 'relative',
-              marginBottom: theme.spacing.md
-            }}>
-              <Text style={{
-                fontSize: theme.fontSizes.xs,
-                color: theme.colors.textSecondary,
-                fontWeight: '600',
-                marginBottom: theme.spacing.xs,
-                textTransform: 'uppercase',
-                letterSpacing: 0.5
-              }}>Senha</Text>
-              <Input
+            <View style={{ position: 'relative' }}>
+              <InputIconContainer>
+                <MaterialIcons name="lock" size={24} color="#00bcd4" />
+              </InputIconContainer>
+              <StyledInput
                 placeholder="Digite sua senha"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
-                style={{
-                  backgroundColor: 'rgba(248, 250, 252, 0.8)',
-                  borderColor: password ? theme.colors.primary : theme.colors.border,
-                  borderWidth: 2,
-                  fontSize: theme.fontSizes.base,
-                  fontWeight: '500'
-                }}
+                secureTextEntry={!showPassword}
+                placeholderTextColor="#999"
               />
+              <EyeIconContainer onPress={() => setShowPassword(!showPassword)}>
+                <MaterialIcons 
+                  name={showPassword ? "visibility" : "visibility-off"} 
+                  size={24} 
+                  color="#00bcd4" 
+                />
+              </EyeIconContainer>
             </View>
           </InputWrapper>
           
-          <View style={{
-            marginTop: theme.spacing.md
-          }}>
-            <Button onPress={handleLogin} style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              shadowColor: '#667eea',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-              shadowRadius: 12,
-              elevation: 6
-            }}>
-              <ButtonText style={{
-                fontWeight: '700',
-                letterSpacing: 0.8
-              }}>Entrar no Sistema</ButtonText>
-            </Button>
-          </View>
-          
-          <WelcomeText>
-            🔧 Conecte-se para monitorar suas linhas de produção em tempo real
-          </WelcomeText>
-          
-          {/* Indicador de segurança */}
-          <View style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: theme.spacing.md,
-            paddingVertical: theme.spacing.sm,
-            paddingHorizontal: theme.spacing.md,
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            borderRadius: theme.borderRadius.lg,
-            borderWidth: 1,
-            borderColor: 'rgba(16, 185, 129, 0.2)'
-          }}>
+          {/* Login Button */}
+          <LoginButton onPress={handleLogin}>
             <Text style={{
-              fontSize: theme.fontSizes.xs,
-              color: '#059669',
-              fontWeight: '600',
-              textAlign: 'center'
-            }}>🔒 Conexão Segura SSL</Text>
-          </View>
+              color: 'white',
+              fontSize: 18,
+              fontWeight: '600'
+            }}>
+              Entrar
+            </Text>
+          </LoginButton>
         </FormContainer>
+        
+        {/* Version */}
+        <VersionText>v2.0.0</VersionText>
       </LoginCard>
-    </GradientBackground>
+    </CyanBackground>
   );
 };
