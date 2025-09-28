@@ -111,17 +111,12 @@ const EyeIconContainer = styled.TouchableOpacity`
 const LoginButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8
 })`
-  border-radius: 14px;
   padding: ${Math.max(screenHeight * 0.014, 10)}px;
   align-items: center;
-  margin-top: ${Math.max(screenHeight * 0.015, 12)}px;
   min-height: ${Math.max(screenHeight * 0.055, 44)}px;
   justify-content: center;
-  shadow-color: #667eea;
-  shadow-offset: 0px 6px;
-  shadow-opacity: 0.25;
-  shadow-radius: 12px;
-  elevation: 6;
+  width: 100%;
+  background-color: transparent;
 `;
 
 const VersionText = styled.Text`
@@ -342,19 +337,21 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         {/* Bottom Action Area */}
         <BottomActionArea>
           {/* Login Button */}
-          <LoginButton onPress={handleLogin}>
-            <LinearGradient
-              colors={['#4A90E2', '#357ABD']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 14,
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
+          <LinearGradient
+            colors={['#4A90E2', '#357ABD']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{
+              borderRadius: 14,
+              marginTop: Math.max(screenHeight * 0.015, 12),
+              shadowColor: '#667eea',
+              shadowOffset: { width: 0, height: 6 },
+              shadowOpacity: 0.25,
+              shadowRadius: 12,
+              elevation: 6,
+            }}
+          >
+            <LoginButton onPress={handleLogin}>
               <Text style={{
                 color: 'white',
                 fontSize: Math.max(screenWidth * 0.045, 18),
@@ -363,8 +360,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               }}>
                 Entrar
               </Text>
-            </LinearGradient>
-          </LoginButton>
+            </LoginButton>
+          </LinearGradient>
           
           {/* Version */}
           <VersionText>v2.0.0</VersionText>
