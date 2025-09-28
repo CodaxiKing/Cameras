@@ -25,14 +25,7 @@ const CurvedOverlay = styled.View`
   right: 0;
   bottom: 0;
   background-color: transparent;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
   margin-top: ${Math.min(screenHeight * 0.08, 80)}px;
-  shadow-color: #000;
-  shadow-offset: 0px -2px;
-  shadow-opacity: 0.1;
-  shadow-radius: 12px;
-  elevation: 8;
 `;
 
 const LoginCard = styled.View`
