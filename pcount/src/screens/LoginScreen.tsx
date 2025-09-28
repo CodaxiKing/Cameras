@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Alert, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { Alert, Text, View, TouchableOpacity, Dimensions, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
@@ -24,9 +25,9 @@ const CurvedOverlay = styled.View`
   right: 0;
   bottom: 0;
   background-color: rgba(255, 255, 255, 0.95);
-  border-top-left-radius: 32px;
-  border-top-right-radius: 32px;
-  margin-top: ${screenHeight * 0.18}px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  margin-top: ${Math.max(screenHeight * 0.12, 120)}px;
   shadow-color: #000;
   shadow-offset: 0px -2px;
   shadow-opacity: 0.1;
@@ -36,9 +37,10 @@ const CurvedOverlay = styled.View`
 
 const LoginCard = styled.View`
   flex: 1;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: ${screenWidth * 0.08}px;
+  padding: ${screenWidth * 0.06}px;
+  padding-top: ${Math.max(screenHeight * 0.05, 40)}px;
 `;
 
 const LogoContainer = styled.View`
@@ -59,24 +61,24 @@ const SubTitle = styled.Text`
 
 const FormContainer = styled.View`
   width: 100%;
-  max-width: ${screenWidth * 0.9}px;
-  padding: ${screenHeight * 0.03}px ${screenWidth * 0.06}px;
+  max-width: ${Math.min(screenWidth * 0.9, 380)}px;
+  padding: ${screenHeight * 0.02}px ${screenWidth * 0.04}px;
 `;
 
 const InputWrapper = styled.View`
   position: relative;
-  margin-bottom: ${screenHeight * 0.024}px;
+  margin-bottom: ${Math.max(screenHeight * 0.018, 16)}px;
 `;
 
 const StyledInput = styled.TextInput`
   background-color: rgba(255, 255, 255, 0.9);
   border-width: 1.5px;
   border-color: #e0e0e0;
-  border-radius: 16px;
-  padding: ${screenHeight * 0.022}px ${screenWidth * 0.04}px ${screenHeight * 0.022}px ${screenWidth * 0.14}px;
-  font-size: ${screenWidth * 0.045}px;
+  border-radius: 14px;
+  padding: ${Math.max(screenHeight * 0.018, 14)}px ${screenWidth * 0.04}px ${Math.max(screenHeight * 0.018, 14)}px ${screenWidth * 0.13}px;
+  font-size: ${Math.max(screenWidth * 0.042, 16)}px;
   color: #2c3e50;
-  min-height: ${screenHeight * 0.065}px;
+  min-height: ${Math.max(screenHeight * 0.06, 48)}px;
   shadow-color: #000;
   shadow-offset: 0px 2px;
   shadow-opacity: 0.05;
@@ -87,26 +89,32 @@ const StyledInput = styled.TextInput`
 
 const InputIconContainer = styled.View`
   position: absolute;
-  left: ${screenWidth * 0.045}px;
-  top: ${screenHeight * 0.022}px;
+  left: ${screenWidth * 0.04}px;
+  top: ${Math.max(screenHeight * 0.018, 14)}px;
   z-index: 1;
 `;
 
 const EyeIconContainer = styled.TouchableOpacity`
   position: absolute;
-  right: ${screenWidth * 0.045}px;
-  top: ${screenHeight * 0.018}px;
+  right: ${screenWidth * 0.04}px;
+  top: ${Math.max(screenHeight * 0.012, 10)}px;
   z-index: 1;
-  padding: ${screenWidth * 0.02}px;
+  padding: ${Math.max(screenWidth * 0.025, 12)}px;
   border-radius: 20px;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 `;
 
-const LoginButton = styled.TouchableOpacity`
-  border-radius: 16px;
-  padding: ${screenHeight * 0.02}px;
+const LoginButton = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8
+})`
+  border-radius: 14px;
+  padding: ${Math.max(screenHeight * 0.016, 12)}px;
   align-items: center;
-  margin-top: ${screenHeight * 0.03}px;
-  min-height: ${screenHeight * 0.065}px;
+  margin-top: ${Math.max(screenHeight * 0.025, 20)}px;
+  min-height: ${Math.max(screenHeight * 0.06, 48)}px;
   justify-content: center;
   shadow-color: #667eea;
   shadow-offset: 0px 6px;
@@ -116,12 +124,11 @@ const LoginButton = styled.TouchableOpacity`
 `;
 
 const VersionText = styled.Text`
-  position: absolute;
-  bottom: ${screenHeight * 0.05}px;
-  align-self: center;
   color: rgba(255, 255, 255, 0.7);
-  font-size: ${screenWidth * 0.035}px;
+  font-size: ${Math.max(screenWidth * 0.032, 12)}px;
   font-weight: 500;
+  text-align: center;
+  margin-top: ${Math.max(screenHeight * 0.02, 16)}px;
 `;
 
 const InputIcon = styled.Text`
@@ -143,12 +150,27 @@ const WelcomeText = styled.Text`
   opacity: 0.8;
 `;
 
+// Styled components for bottom action area
+const BottomActionArea = styled.View`
+  width: 100%;
+  padding: ${screenWidth * 0.04}px;
+  padding-bottom: ${Math.max(screenHeight * 0.03, 20)}px;
+`;
+
+const ContentArea = styled.View`
+  flex: 1;
+  align-items: center;
+  width: 100%;
+`;
+
 export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const emailRef = useRef<any>(null);
+  const passwordRef = useRef<any>(null);
   const { login } = useAuth();
 
   const handleLogin = async () => {
@@ -165,18 +187,29 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <GradientBackground>
-      <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={{ flex: 1 }}
-      >
-      <CurvedOverlay />
-      <LoginCard>
+    <SafeAreaView style={{ flex: 1 }}>
+      <GradientBackground>
+        <LinearGradient
+          colors={['#667eea', '#764ba2', '#f093fb']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{ flex: 1 }}
+        >
+          <CurvedOverlay />
+          <KeyboardAvoidingView 
+            style={{ flex: 1 }} 
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <ScrollView 
+              contentContainerStyle={{ flexGrow: 1 }}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+            >
+              <LoginCard>
+                <ContentArea>
         {/* Logo Area */}
-        <LogoContainer style={{ marginTop: screenHeight * 0.05 }}>
-          <View style={{ alignItems: 'center', marginBottom: screenHeight * 0.06 }}>
+        <LogoContainer style={{ marginTop: Math.max(screenHeight * 0.03, 30) }}>
+          <View style={{ alignItems: 'center', marginBottom: Math.max(screenHeight * 0.035, 30) }}>
             {/* Main PCOUNT Logo */}
             <View style={{ 
               flexDirection: 'row', 
@@ -185,7 +218,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               marginBottom: 8
             }}>
               <Text style={{
-                fontSize: screenWidth * 0.14,
+                fontSize: Math.min(screenWidth * 0.12, 48),
                 fontWeight: '800',
                 color: 'rgba(255, 255, 255, 0.95)',
                 letterSpacing: 1,
@@ -196,9 +229,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 PC
               </Text>
               <View style={{
-                width: screenWidth * 0.12,
-                height: screenWidth * 0.12,
-                borderRadius: screenWidth * 0.06,
+                width: Math.max(screenWidth * 0.1, 40),
+                height: Math.max(screenWidth * 0.1, 40),
+                borderRadius: Math.max(screenWidth * 0.05, 20),
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -209,10 +242,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 shadowRadius: 8,
                 elevation: 6
               }}>
-                <MaterialIcons name="visibility" size={screenWidth * 0.06} color="#667eea" />
+                <MaterialIcons name="visibility" size={Math.max(screenWidth * 0.05, 20)} color="#667eea" />
               </View>
               <Text style={{
-                fontSize: screenWidth * 0.14,
+                fontSize: Math.min(screenWidth * 0.12, 48),
                 fontWeight: '800',
                 color: 'rgba(255, 255, 255, 0.95)',
                 letterSpacing: 1,
@@ -225,7 +258,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             </View>
             {/* Subtitle */}
             <Text style={{
-              fontSize: screenWidth * 0.042,
+              fontSize: Math.max(screenWidth * 0.038, 15),
               color: 'rgba(255, 255, 255, 0.8)',
               fontWeight: '500',
               letterSpacing: 0.5,
@@ -241,12 +274,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <FormContainer>
           {/* Form Title */}
           <Text style={{
-            fontSize: screenWidth * 0.05,
+            fontSize: Math.max(screenWidth * 0.045, 17),
             color: '#2c3e50',
             textAlign: 'center',
-            marginBottom: screenHeight * 0.04,
+            marginBottom: Math.max(screenHeight * 0.025, 20),
             fontWeight: '600',
-            lineHeight: screenWidth * 0.065
+            lineHeight: Math.max(screenWidth * 0.055, 22)
           }}>
             Entre com suas credenciais para{'\n'}acessar o sistema.
           </Text>
@@ -255,17 +288,23 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <InputWrapper>
             <View style={{ position: 'relative' }}>
               <InputIconContainer>
-                <MaterialIcons name="email" size={screenWidth * 0.065} color="#667eea" />
+                <MaterialIcons name="email" size={Math.max(screenWidth * 0.055, 22)} color="#667eea" />
               </InputIconContainer>
               <StyledInput
+                ref={emailRef}
                 placeholder="Digite seu e-mail"
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 keyboardType="email-address"
+                textContentType="emailAddress"
+                autoComplete="email"
+                returnKeyType="next"
+                blurOnSubmit={false}
                 placeholderTextColor="#a0a0a0"
                 onFocus={() => setEmailFocused(true)}
                 onBlur={() => setEmailFocused(false)}
+                onSubmitEditing={() => passwordRef.current?.focus()}
                 style={emailFocused ? {
                   borderColor: '#667eea',
                   borderWidth: 2,
@@ -280,16 +319,21 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <InputWrapper>
             <View style={{ position: 'relative' }}>
               <InputIconContainer>
-                <MaterialIcons name="lock" size={screenWidth * 0.065} color="#667eea" />
+                <MaterialIcons name="lock" size={Math.max(screenWidth * 0.055, 22)} color="#667eea" />
               </InputIconContainer>
               <StyledInput
+                ref={passwordRef}
                 placeholder="Digite sua senha"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
+                textContentType="password"
+                autoComplete="current-password"
+                returnKeyType="go"
                 placeholderTextColor="#a0a0a0"
                 onFocus={() => setPasswordFocused(true)}
                 onBlur={() => setPasswordFocused(false)}
+                onSubmitEditing={handleLogin}
                 style={passwordFocused ? {
                   borderColor: '#667eea',
                   borderWidth: 2,
@@ -300,13 +344,18 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <EyeIconContainer onPress={() => setShowPassword(!showPassword)}>
                 <MaterialIcons 
                   name={showPassword ? "visibility" : "visibility-off"} 
-                  size={screenWidth * 0.065} 
+                  size={Math.max(screenWidth * 0.055, 22)} 
                   color="#667eea" 
                 />
               </EyeIconContainer>
             </View>
           </InputWrapper>
           
+        </FormContainer>
+        </ContentArea>
+
+        {/* Bottom Action Area */}
+        <BottomActionArea>
           {/* Login Button */}
           <LoginButton onPress={handleLogin}>
             <LinearGradient
@@ -315,14 +364,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               end={{ x: 1, y: 0 }}
               style={{
                 flex: 1,
-                borderRadius: 16,
+                borderRadius: 14,
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
             >
               <Text style={{
                 color: 'white',
-                fontSize: screenWidth * 0.05,
+                fontSize: Math.max(screenWidth * 0.045, 18),
                 fontWeight: '700',
                 letterSpacing: 0.5
               }}>
@@ -330,12 +379,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               </Text>
             </LinearGradient>
           </LoginButton>
-        </FormContainer>
-        
-        {/* Version */}
-        <VersionText>v2.0.0</VersionText>
+          
+          {/* Version */}
+          <VersionText>v2.0.0</VersionText>
+        </BottomActionArea>
       </LoginCard>
-      </LinearGradient>
-    </GradientBackground>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </LinearGradient>
+      </GradientBackground>
+    </SafeAreaView>
   );
 };
