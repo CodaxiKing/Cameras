@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Alert, Text, View, TouchableOpacity, Dimensions, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { Alert, Text, View, TouchableOpacity, Dimensions, KeyboardAvoidingView, ScrollView, Platform, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -181,11 +181,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <GradientBackground>
-        <LinearGradient
-          colors={['#00BFFF', '#87CEEB', '#E0F6FF', '#F0F8FF']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
+        <ImageBackground
+          source={require('../../assets/background.png')}
           style={{ flex: 1 }}
+          resizeMode="cover"
         >
           <CurvedOverlay />
           <KeyboardAvoidingView 
@@ -369,7 +368,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       </LoginCard>
             </ScrollView>
           </KeyboardAvoidingView>
-        </LinearGradient>
+        </ImageBackground>
       </GradientBackground>
     </SafeAreaView>
   );
