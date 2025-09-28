@@ -28,10 +28,7 @@ const CurvedOverlay = styled.View`
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   margin-top: ${Math.max(screenHeight * 0.12, 120)}px;
-  shadow-color: #000;
-  shadow-offset: 0px -2px;
-  shadow-opacity: 0.1;
-  shadow-radius: 12px;
+  box-shadow: 0px -2px 12px rgba(0, 0, 0, 0.1);
   elevation: 8;
 `;
 
@@ -79,10 +76,7 @@ const StyledInput = styled.TextInput`
   font-size: ${Math.max(screenWidth * 0.042, 16)}px;
   color: #2c3e50;
   min-height: ${Math.max(screenHeight * 0.06, 48)}px;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.05;
-  shadow-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
   elevation: 2;
   font-weight: 500;
 `;
@@ -116,10 +110,7 @@ const LoginButton = styled.TouchableOpacity.attrs({
   margin-top: ${Math.max(screenHeight * 0.025, 20)}px;
   min-height: ${Math.max(screenHeight * 0.06, 48)}px;
   justify-content: center;
-  shadow-color: #667eea;
-  shadow-offset: 0px 6px;
-  shadow-opacity: 0.25;
-  shadow-radius: 12px;
+  box-shadow: 0px 6px 12px rgba(102, 126, 234, 0.25);
   elevation: 6;
 `;
 
@@ -236,10 +227,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginHorizontal: screenWidth * 0.01,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.15,
-                shadowRadius: 8,
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
                 elevation: 6
               }}>
                 <MaterialIcons name="visibility" size={Math.max(screenWidth * 0.05, 20)} color="#667eea" />
