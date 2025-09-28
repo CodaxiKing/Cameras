@@ -27,7 +27,7 @@ const CurvedOverlay = styled.View`
   background-color: rgba(255, 255, 255, 0.95);
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
-  margin-top: ${Math.max(screenHeight * 0.12, 120)}px;
+  margin-top: ${Math.max(screenHeight * 0.08, 80)}px;
   box-shadow: 0px -2px 12px rgba(0, 0, 0, 0.1);
   elevation: 8;
 `;
@@ -42,7 +42,7 @@ const LoginCard = styled.View`
 
 const LogoContainer = styled.View`
   align-items: center;
-  margin-bottom: ${screenHeight * 0.04}px;
+  margin-bottom: ${Math.max(screenHeight * 0.02, 16)}px;
 `;
 
 const SubTitle = styled.Text`
@@ -65,7 +65,7 @@ const FormContainer = styled.View`
 
 const InputWrapper = styled.View`
   position: relative;
-  margin-bottom: ${Math.max(screenHeight * 0.018, 16)}px;
+  margin-bottom: ${Math.max(screenHeight * 0.015, 12)}px;
 `;
 
 const StyledInput = styled.TextInput`
@@ -106,10 +106,10 @@ const LoginButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8
 })`
   border-radius: 14px;
-  padding: ${Math.max(screenHeight * 0.016, 12)}px;
+  padding: ${Math.max(screenHeight * 0.014, 10)}px;
   align-items: center;
-  margin-top: ${Math.max(screenHeight * 0.025, 20)}px;
-  min-height: ${Math.max(screenHeight * 0.06, 48)}px;
+  margin-top: ${Math.max(screenHeight * 0.015, 12)}px;
+  min-height: ${Math.max(screenHeight * 0.055, 44)}px;
   justify-content: center;
   box-shadow: 0px 6px 12px rgba(102, 126, 234, 0.25);
   elevation: 6;
@@ -204,8 +204,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <LoginCard>
                 <ContentArea>
         {/* Logo Area */}
-        <LogoContainer style={{ marginTop: Math.max(screenHeight * 0.03, 30) }}>
-          <View style={{ alignItems: 'center', marginBottom: Math.max(screenHeight * 0.035, 30) }}>
+        <LogoContainer style={{ marginTop: Math.max(screenHeight * 0.015, 12) }}>
+          <View style={{ alignItems: 'center', marginBottom: Math.max(screenHeight * 0.02, 20) }}>
             {/* Main PCOUNT Logo */}
             <View style={{ 
               flexDirection: 'row', 
@@ -267,12 +267,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <FormContainer>
           {/* Form Title */}
           <Text style={{
-            fontSize: Math.max(screenWidth * 0.045, 17),
+            fontSize: Math.max(screenWidth * 0.040, 16),
             color: '#2c3e50',
             textAlign: 'center',
-            marginBottom: Math.max(screenHeight * 0.025, 20),
+            marginBottom: Math.max(screenHeight * 0.02, 16),
             fontWeight: '600',
-            lineHeight: Math.max(screenWidth * 0.055, 22)
+            lineHeight: Math.max(screenWidth * 0.050, 20)
           }}>
             Entre com suas credenciais para{'\n'}acessar o sistema.
           </Text>
