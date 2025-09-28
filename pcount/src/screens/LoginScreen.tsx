@@ -187,7 +187,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <GradientBackground>
         <LinearGradient
-          colors={['#667eea', '#764ba2', '#f093fb']}
+          colors={['#4A90E2', '#357ABD', '#2C5F8A']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -205,8 +205,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <LoginCard>
                 <ContentArea>
         {/* Logo Area */}
-        <LogoContainer style={{ marginTop: Math.max(screenHeight * 0.015, 12) }}>
-          <View style={{ alignItems: 'center', marginBottom: Math.max(screenHeight * 0.02, 20) }}>
+        <LogoContainer style={{ marginTop: Math.max(screenHeight * 0.08, 60) }}>
+          <View style={{ alignItems: 'center', marginBottom: Math.max(screenHeight * 0.03, 24) }}>
             {/* Main PCOUNT Logo */}
             <View style={{ 
               flexDirection: 'row', 
@@ -250,18 +250,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 UNT
               </Text>
             </View>
-            {/* Subtitle */}
-            <Text style={{
-              fontSize: Math.max(screenWidth * 0.038, 15),
-              color: 'rgba(255, 255, 255, 0.8)',
-              fontWeight: '500',
-              letterSpacing: 0.5,
-              textShadowColor: 'rgba(0, 0, 0, 0.1)',
-              textShadowOffset: { width: 0, height: 1 },
-              textShadowRadius: 2
-            }}>
-              Sistema de Monitoramento
-            </Text>
           </View>
         </LogoContainer>
         
@@ -356,7 +344,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           {/* Login Button */}
           <LoginButton onPress={handleLogin}>
             <LinearGradient
-              colors={['#667eea', '#764ba2']}
+              colors={['#4A90E2', '#357ABD']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={{
