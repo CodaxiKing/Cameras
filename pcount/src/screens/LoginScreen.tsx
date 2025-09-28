@@ -24,7 +24,7 @@ const CurvedOverlay = styled.View`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: transparent;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   margin-top: ${Math.min(screenHeight * 0.08, 80)}px;
@@ -72,13 +72,13 @@ const InputWrapper = styled.View`
 `;
 
 const StyledInput = styled.TextInput`
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: transparent;
   border-width: 1.5px;
-  border-color: #e0e0e0;
+  border-color: rgba(255, 255, 255, 0.3);
   border-radius: 14px;
   padding: ${Math.max(screenHeight * 0.018, 14)}px ${screenWidth * 0.04}px ${Math.max(screenHeight * 0.018, 14)}px ${screenWidth * 0.13}px;
   font-size: ${Math.max(screenWidth * 0.042, 16)}px;
-  color: #2c3e50;
+  color: #ffffff;
   min-height: ${Math.max(screenHeight * 0.06, 48)}px;
   shadow-color: #000;
   shadow-offset: 0px 2px;
@@ -149,9 +149,9 @@ const BottomActionArea = styled.View`
   padding: ${screenWidth * 0.04}px;
   padding-top: ${Math.max(screenHeight * 0.02, 16)}px;
   padding-bottom: ${Math.max(screenHeight * 0.03, 20)}px;
-  background-color: rgba(255, 255, 255, 0.98);
-  border-top-width: 1px;
-  border-top-color: rgba(0, 0, 0, 0.05);
+  background-color: transparent;
+  border-top-width: 0px;
+  border-top-color: transparent;
 `;
 
 const ContentArea = styled.View`
@@ -257,7 +257,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           {/* Form Title */}
           <Text style={{
             fontSize: Math.max(screenWidth * 0.040, 16),
-            color: '#2c3e50',
+            color: '#ffffff',
             textAlign: 'center',
             marginBottom: Math.max(screenHeight * 0.02, 16),
             fontWeight: '600',
@@ -285,7 +285,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   autoComplete="email"
                   returnKeyType="next"
                   blurOnSubmit={false}
-                  placeholderTextColor="#a0a0a0"
+                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
                   onSubmitEditing={() => passwordRef.current?.focus()}
@@ -314,7 +314,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   textContentType="password"
                   autoComplete="current-password"
                   returnKeyType="go"
-                  placeholderTextColor="#a0a0a0"
+                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   onFocus={() => setPasswordFocused(true)}
                   onBlur={() => setPasswordFocused(false)}
                   onSubmitEditing={handleLogin}
