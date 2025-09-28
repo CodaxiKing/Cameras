@@ -341,13 +341,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={{
-              borderRadius: 14,
               marginTop: Math.max(screenHeight * 0.001, 2),
-              shadowColor: '#667eea',
-              shadowOffset: { width: 0, height: 6 },
-              shadowOpacity: 0.25,
-              shadowRadius: 12,
-              elevation: 6,
             }}
           >
             <LoginButton onPress={handleLogin}>
