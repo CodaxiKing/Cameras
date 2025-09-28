@@ -72,13 +72,13 @@ const InputWrapper = styled.View`
 `;
 
 const StyledInput = styled.TextInput`
-  background-color: transparent;
+  background-color: #ffffff;
   border-width: 1.5px;
   border-color: rgba(255, 255, 255, 0.3);
   border-radius: 14px;
   padding: ${Math.max(screenHeight * 0.018, 14)}px ${screenWidth * 0.04}px ${Math.max(screenHeight * 0.018, 14)}px ${screenWidth * 0.13}px;
   font-size: ${Math.max(screenWidth * 0.042, 16)}px;
-  color: #ffffff;
+  color: #333333;
   min-height: ${Math.max(screenHeight * 0.06, 48)}px;
   shadow-color: #000;
   shadow-offset: 0px 2px;
@@ -280,7 +280,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   autoComplete="email"
                   returnKeyType="next"
                   blurOnSubmit={false}
-                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                  placeholderTextColor="rgba(0, 0, 0, 0.5)"
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
                   onSubmitEditing={() => passwordRef.current?.focus()}
@@ -309,7 +309,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   textContentType="password"
                   autoComplete="current-password"
                   returnKeyType="go"
-                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                  placeholderTextColor="rgba(0, 0, 0, 0.5)"
                   onFocus={() => setPasswordFocused(true)}
                   onBlur={() => setPasswordFocused(false)}
                   onSubmitEditing={handleLogin}
