@@ -343,7 +343,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             end={{ x: 1, y: 0 }}
             style={{
               borderRadius: 14,
-              marginTop: Math.max(screenHeight * 0.015, 12),
+              marginTop: Math.max(screenHeight * 0.005, 4),
               shadowColor: '#667eea',
               shadowOffset: { width: 0, height: 6 },
               shadowOpacity: 0.25,
