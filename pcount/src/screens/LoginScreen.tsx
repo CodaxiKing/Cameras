@@ -272,72 +272,75 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             Entre com suas credenciais para{'\n'}acessar o sistema.
           </Text>
           
-          {/* Email Input */}
-          <InputWrapper>
-            <View style={{ position: 'relative' }}>
-              <InputIconContainer>
-                <MaterialIcons name="email" size={Math.max(screenWidth * 0.055, 22)} color="#667eea" />
-              </InputIconContainer>
-              <StyledInput
-                ref={emailRef}
-                placeholder="Digite seu e-mail"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                autoComplete="email"
-                returnKeyType="next"
-                blurOnSubmit={false}
-                placeholderTextColor="#a0a0a0"
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
-                onSubmitEditing={() => passwordRef.current?.focus()}
-                style={emailFocused ? {
-                  borderColor: '#667eea',
-                  borderWidth: 2,
-                  backgroundColor: 'rgba(255, 255, 255, 1)',
-                  shadowOpacity: 0.1
-                } : {}}
-              />
-            </View>
-          </InputWrapper>
-          
-          {/* Password Input */}
-          <InputWrapper>
-            <View style={{ position: 'relative' }}>
-              <InputIconContainer>
-                <MaterialIcons name="lock" size={Math.max(screenWidth * 0.055, 22)} color="#667eea" />
-              </InputIconContainer>
-              <StyledInput
-                ref={passwordRef}
-                placeholder="Digite sua senha"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                textContentType="password"
-                autoComplete="current-password"
-                returnKeyType="go"
-                placeholderTextColor="#a0a0a0"
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
-                onSubmitEditing={handleLogin}
-                style={passwordFocused ? {
-                  borderColor: '#667eea',
-                  borderWidth: 2,
-                  backgroundColor: 'rgba(255, 255, 255, 1)',
-                  shadowOpacity: 0.1
-                } : {}}
-              />
-              <EyeIconContainer onPress={() => setShowPassword(!showPassword)}>
-                <MaterialIcons 
-                  name={showPassword ? "visibility" : "visibility-off"} 
-                  size={Math.max(screenWidth * 0.055, 22)} 
-                  color="#667eea" 
+          {/* Login Form */}
+          <View style={{ width: '100%' }}>
+            {/* Email Input */}
+            <InputWrapper>
+              <View style={{ position: 'relative' }}>
+                <InputIconContainer>
+                  <MaterialIcons name="email" size={Math.max(screenWidth * 0.055, 22)} color="#667eea" />
+                </InputIconContainer>
+                <StyledInput
+                  ref={emailRef}
+                  placeholder="Digite seu e-mail"
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  autoComplete="email"
+                  returnKeyType="next"
+                  blurOnSubmit={false}
+                  placeholderTextColor="#a0a0a0"
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => setEmailFocused(false)}
+                  onSubmitEditing={() => passwordRef.current?.focus()}
+                  style={emailFocused ? {
+                    borderColor: '#667eea',
+                    borderWidth: 2,
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                    shadowOpacity: 0.1
+                  } : {}}
                 />
-              </EyeIconContainer>
-            </View>
-          </InputWrapper>
+              </View>
+            </InputWrapper>
+            
+            {/* Password Input */}
+            <InputWrapper>
+              <View style={{ position: 'relative' }}>
+                <InputIconContainer>
+                  <MaterialIcons name="lock" size={Math.max(screenWidth * 0.055, 22)} color="#667eea" />
+                </InputIconContainer>
+                <StyledInput
+                  ref={passwordRef}
+                  placeholder="Digite sua senha"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                  textContentType="password"
+                  autoComplete="current-password"
+                  returnKeyType="go"
+                  placeholderTextColor="#a0a0a0"
+                  onFocus={() => setPasswordFocused(true)}
+                  onBlur={() => setPasswordFocused(false)}
+                  onSubmitEditing={handleLogin}
+                  style={passwordFocused ? {
+                    borderColor: '#667eea',
+                    borderWidth: 2,
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                    shadowOpacity: 0.1
+                  } : {}}
+                />
+                <EyeIconContainer onPress={() => setShowPassword(!showPassword)}>
+                  <MaterialIcons 
+                    name={showPassword ? "visibility" : "visibility-off"} 
+                    size={Math.max(screenWidth * 0.055, 22)} 
+                    color="#667eea" 
+                  />
+                </EyeIconContainer>
+              </View>
+            </InputWrapper>
+          </View>
           
         </FormContainer>
         </ContentArea>
