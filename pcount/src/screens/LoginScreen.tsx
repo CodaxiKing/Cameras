@@ -27,8 +27,11 @@ const CurvedOverlay = styled.View`
   background-color: rgba(255, 255, 255, 0.95);
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
-  margin-top: ${Math.max(screenHeight * 0.08, 80)}px;
-  box-shadow: 0px -2px 12px rgba(0, 0, 0, 0.1);
+  margin-top: ${Math.min(screenHeight * 0.08, 80)}px;
+  shadow-color: #000;
+  shadow-offset: 0px -2px;
+  shadow-opacity: 0.1;
+  shadow-radius: 12px;
   elevation: 8;
 `;
 
@@ -77,7 +80,10 @@ const StyledInput = styled.TextInput`
   font-size: ${Math.max(screenWidth * 0.042, 16)}px;
   color: #2c3e50;
   min-height: ${Math.max(screenHeight * 0.06, 48)}px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.05;
+  shadow-radius: 8px;
   elevation: 2;
   font-weight: 500;
 `;
@@ -111,7 +117,10 @@ const LoginButton = styled.TouchableOpacity.attrs({
   margin-top: ${Math.max(screenHeight * 0.015, 12)}px;
   min-height: ${Math.max(screenHeight * 0.055, 44)}px;
   justify-content: center;
-  box-shadow: 0px 6px 12px rgba(102, 126, 234, 0.25);
+  shadow-color: #667eea;
+  shadow-offset: 0px 6px;
+  shadow-opacity: 0.25;
+  shadow-radius: 12px;
   elevation: 6;
 `;
 
@@ -123,14 +132,6 @@ const VersionText = styled.Text`
   margin-top: ${Math.max(screenHeight * 0.02, 16)}px;
 `;
 
-const InputIcon = styled.Text`
-  position: absolute;
-  left: ${theme.spacing.lg}px;
-  top: 50%;
-  transform: translateY(-12px);
-  font-size: 20px;
-  z-index: 1;
-`;
 
 const WelcomeText = styled.Text`
   font-size: ${theme.fontSizes.xs}px;
