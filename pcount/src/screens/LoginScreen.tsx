@@ -60,6 +60,7 @@ const FormContainer = styled.View`
   width: 100%;
   max-width: ${Math.min(screenWidth * 0.9, 380)}px;
   padding: ${screenHeight * 0.02}px ${screenWidth * 0.04}px;
+  margin-bottom: ${Math.max(screenHeight * 0.02, 16)}px;
 `;
 
 const InputWrapper = styled.View`
@@ -145,7 +146,11 @@ const WelcomeText = styled.Text`
 const BottomActionArea = styled.View`
   width: 100%;
   padding: ${screenWidth * 0.04}px;
+  padding-top: ${Math.max(screenHeight * 0.02, 16)}px;
   padding-bottom: ${Math.max(screenHeight * 0.03, 20)}px;
+  background-color: rgba(255, 255, 255, 0.98);
+  border-top-width: 1px;
+  border-top-color: rgba(0, 0, 0, 0.05);
 `;
 
 const ContentArea = styled.View`
