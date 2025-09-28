@@ -120,7 +120,7 @@ const LoginButton = styled.TouchableOpacity.attrs({
 `;
 
 const VersionText = styled.Text`
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.6);
   font-size: ${Math.max(screenWidth * 0.032, 12)}px;
   font-weight: 500;
   text-align: center;
