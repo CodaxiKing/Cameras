@@ -705,11 +705,11 @@ const DateSelector: React.FC<{
         }}>
           <View style={{
             backgroundColor: '#ffffff',
-            borderRadius: 24,
-            padding: theme.spacing.xl,
+            borderRadius: 20,
+            padding: theme.spacing.md,
             width: '100%',
             maxWidth: 340,
-            maxHeight: '85%',
+            maxHeight: '80%',
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 10 },
             shadowOpacity: 0.25,
@@ -719,22 +719,22 @@ const DateSelector: React.FC<{
             <View style={{
               flexDirection: 'row',
               alignItems: 'center',
-              marginBottom: theme.spacing.lg
+              marginBottom: theme.spacing.md
             }}>
               <View style={{
                 backgroundColor: '#3b82f6',
-                borderRadius: 10,
-                width: 36,
-                height: 36,
+                borderRadius: 8,
+                width: 32,
+                height: 32,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: theme.spacing.md
+                marginRight: theme.spacing.sm
               }}>
-                <MaterialIcons name="date-range" size={20} color="#ffffff" />
+                <MaterialIcons name="date-range" size={18} color="#ffffff" />
               </View>
               <Text style={{ 
                 color: '#1e293b', 
-                fontSize: theme.fontSizes.lg, 
+                fontSize: theme.fontSizes.base, 
                 fontWeight: '700'
               }}>
                 Selecionar Período
@@ -742,21 +742,21 @@ const DateSelector: React.FC<{
             </View>
             
             {/* Seleção manual de datas */}
-            <View style={{ marginBottom: theme.spacing.lg }}>
+            <View style={{ marginBottom: theme.spacing.sm }}>
               <Text style={{ 
                 color: '#475569', 
                 fontSize: theme.fontSizes.sm, 
                 fontWeight: '600',
-                marginBottom: theme.spacing.sm
+                marginBottom: 6
               }}>
                 Data Inicial:
               </Text>
               <View style={{ 
                 backgroundColor: '#f8fafc', 
-                borderRadius: 16, 
-                marginBottom: theme.spacing.md,
-                paddingHorizontal: theme.spacing.md,
-                paddingVertical: theme.spacing.sm,
+                borderRadius: 12, 
+                marginBottom: theme.spacing.sm,
+                paddingHorizontal: theme.spacing.sm,
+                paddingVertical: 4,
                 borderWidth: 1,
                 borderColor: '#e2e8f0'
               }}>
@@ -770,7 +770,7 @@ const DateSelector: React.FC<{
                     backgroundColor: 'transparent',
                     borderWidth: 0,
                     margin: 0,
-                    height: 40,
+                    height: 36,
                     fontSize: theme.fontSizes.sm
                   }}
                 />
@@ -780,16 +780,16 @@ const DateSelector: React.FC<{
                 color: '#475569', 
                 fontSize: theme.fontSizes.sm, 
                 fontWeight: '600',
-                marginBottom: theme.spacing.sm
+                marginBottom: 6
               }}>
                 Data Final:
               </Text>
               <View style={{ 
                 backgroundColor: '#f8fafc', 
-                borderRadius: 16, 
-                marginBottom: theme.spacing.md,
-                paddingHorizontal: theme.spacing.md,
-                paddingVertical: theme.spacing.sm,
+                borderRadius: 12, 
+                marginBottom: theme.spacing.sm,
+                paddingHorizontal: theme.spacing.sm,
+                paddingVertical: 4,
                 borderWidth: 1,
                 borderColor: '#e2e8f0'
               }}>
@@ -803,7 +803,7 @@ const DateSelector: React.FC<{
                     backgroundColor: 'transparent',
                     borderWidth: 0,
                     margin: 0,
-                    height: 40,
+                    height: 36,
                     fontSize: theme.fontSizes.sm
                   }}
                 />
@@ -815,7 +815,7 @@ const DateSelector: React.FC<{
               color: '#475569', 
               fontSize: theme.fontSizes.sm, 
               fontWeight: '600',
-              marginBottom: theme.spacing.sm
+              marginBottom: 6
             }}>
               Períodos rápidos:
             </Text>
@@ -829,15 +829,15 @@ const DateSelector: React.FC<{
                 }}
                 style={{
                   backgroundColor: '#3b82f6',
-                  paddingHorizontal: theme.spacing.lg,
-                  paddingVertical: theme.spacing.md,
-                  borderRadius: 16,
-                  marginBottom: theme.spacing.sm,
+                  paddingHorizontal: theme.spacing.md,
+                  paddingVertical: 10,
+                  borderRadius: 12,
+                  marginBottom: 6,
                   flexDirection: 'row',
                   alignItems: 'center'
                 }}
               >
-                <MaterialIcons name="schedule" size={16} color="#ffffff" style={{ marginRight: theme.spacing.sm }} />
+                <MaterialIcons name="schedule" size={14} color="#ffffff" style={{ marginRight: 6 }} />
                 <Text style={{ 
                   color: '#ffffff', 
                   fontWeight: '600',
@@ -848,14 +848,14 @@ const DateSelector: React.FC<{
               </TouchableOpacity>
             ))}
             
-            <View style={{ flexDirection: 'row', marginTop: theme.spacing.lg, gap: theme.spacing.sm }}>
+            <View style={{ flexDirection: 'row', marginTop: theme.spacing.md, gap: theme.spacing.sm }}>
               <TouchableOpacity
                 onPress={() => setShowModal(false)}
                 style={{
                   backgroundColor: '#f1f5f9',
-                  paddingVertical: theme.spacing.md,
-                  paddingHorizontal: theme.spacing.lg,
-                  borderRadius: 16,
+                  paddingVertical: 10,
+                  paddingHorizontal: theme.spacing.md,
+                  borderRadius: 12,
                   flex: 1,
                   borderWidth: 1,
                   borderColor: '#e2e8f0'
@@ -875,9 +875,9 @@ const DateSelector: React.FC<{
                 onPress={handleSave}
                 style={{
                   backgroundColor: '#3b82f6',
-                  paddingVertical: theme.spacing.md,
-                  paddingHorizontal: theme.spacing.lg,
-                  borderRadius: 16,
+                  paddingVertical: 10,
+                  paddingHorizontal: theme.spacing.md,
+                  borderRadius: 12,
                   flex: 1
                 }}
               >
