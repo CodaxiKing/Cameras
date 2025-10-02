@@ -1036,9 +1036,7 @@ const ProductionSelector: React.FC<{
           shadowRadius: 8,
           elevation: 4,
           flexDirection: 'row',
-          alignItems: 'center',
-          alignSelf: 'flex-start',
-          minWidth: 200
+          alignItems: 'center'
         }}
       >
         <View style={{
