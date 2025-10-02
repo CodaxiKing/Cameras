@@ -85,9 +85,9 @@ export class ProductionService {
     return {
       id: producao.id,
       lineId: producao.circuitoId,
-      productCode: producao.produto.codigo,
-      productName: producao.produto.nome,
-      technician: producao.tecnico,
+      productCode: producao.produto?.codigo || 'N/A',
+      productName: producao.produto?.nome || 'Produto não especificado',
+      technician: producao.tecnico || 'N/A',
       startDate: producao.dataInicio,
       endDate: producao.dataFim,
       status: this.mapStatus(producao.status),
