@@ -47,20 +47,25 @@ const TotalProducedCard: React.FC<{
   // Garantir que o valor seja positivo
   const safeValue = Math.max(0, value);
   
-  // Definir os níveis e cores (baseado na imagem de referência)
+  // Definir os níveis e cores conforme especificado
   const levels = [
-    { threshold: 4800, color: '#dc2626', label: '4800' },
-    { threshold: 6600, color: '#ea580c', label: '6600' },
-    { threshold: 8400, color: '#65a30d', label: '8400' },
-    { threshold: 10200, color: '#16a34a', label: '10200' },
-    { threshold: 13000, color: '#0891b2', label: '13000' }
+    { threshold: 0, color: '#b91c1c', label: '0' },        // vermelho escuro (até 4800)
+    { threshold: 4800, color: '#c2410c', label: '4800' },   // laranja escuro (4800-6600)
+    { threshold: 6600, color: '#4d7c0f', label: '6600' },   // verde escuro (6600-8400)
+    { threshold: 8400, color: '#16a34a', label: '8400' },   // verde escuro mais claro (8400-10200)
+    { threshold: 10200, color: '#10b981', label: '10200' }  // verde normal mais claro (10200+)
   ];
   
-  // Determinar qual nível foi atingido
-  const currentLevel = levels.reduce((prev, curr) => 
-    safeValue >= curr.threshold ? curr : prev, 
-    levels[0]
-  );
+  // Determinar qual cor usar baseado na faixa de valor
+  const getCurrentColor = () => {
+    if (safeValue < 4800) return levels[0].color;
+    if (safeValue < 6600) return levels[1].color;
+    if (safeValue < 8400) return levels[2].color;
+    if (safeValue < 10200) return levels[3].color;
+    return levels[4].color;
+  };
+  
+  const currentColor = getCurrentColor();
   
   return (
     <View style={{
@@ -113,7 +118,7 @@ const TotalProducedCard: React.FC<{
           alignItems: 'center',
           marginBottom: isSmallScreen ? theme.spacing.md : theme.spacing.lg,
           borderWidth: isSmallScreen ? 6 : 8,
-          borderColor: currentLevel.color,
+          borderColor: currentColor,
           position: 'relative'
         }}>
           {/* Valor principal */}
@@ -139,7 +144,7 @@ const TotalProducedCard: React.FC<{
             width: isSmallScreen ? 20 : 24,
             height: isSmallScreen ? 20 : 24,
             borderRadius: isSmallScreen ? 10 : 12,
-            backgroundColor: currentLevel.color,
+            backgroundColor: currentColor,
             justifyContent: 'center',
             alignItems: 'center'
           }}>
@@ -155,27 +160,30 @@ const TotalProducedCard: React.FC<{
           marginBottom: isSmallScreen ? theme.spacing.sm : theme.spacing.md,
           paddingHorizontal: theme.spacing.xs
         }}>
-          {levels.map((level, index) => (
-            <View key={index} style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: isSmallScreen ? 2 : theme.spacing.xs,
-              marginBottom: theme.spacing.xs,
-              backgroundColor: safeValue >= level.threshold ? level.color : '#f1f5f9',
-              paddingHorizontal: isSmallScreen ? 6 : theme.spacing.sm,
-              paddingVertical: isSmallScreen ? 2 : 4,
-              borderRadius: theme.borderRadius.md,
-              opacity: safeValue >= level.threshold ? 1 : 0.6
-            }}>
-              <Text style={{
-                fontSize: isSmallScreen ? 10 : theme.fontSizes.xs,
-                color: safeValue >= level.threshold ? '#ffffff' : theme.colors.text,
-                fontWeight: '700'
+          {levels.slice(1).map((level, index) => {
+            const isActive = safeValue >= level.threshold;
+            return (
+              <View key={index} style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: isSmallScreen ? 2 : theme.spacing.xs,
+                marginBottom: theme.spacing.xs,
+                backgroundColor: isActive ? level.color : '#f1f5f9',
+                paddingHorizontal: isSmallScreen ? 6 : theme.spacing.sm,
+                paddingVertical: isSmallScreen ? 2 : 4,
+                borderRadius: theme.borderRadius.md,
+                opacity: isActive ? 1 : 0.6
               }}>
-                {level.label}
-              </Text>
-            </View>
-          ))}
+                <Text style={{
+                  fontSize: isSmallScreen ? 10 : theme.fontSizes.xs,
+                  color: isActive ? '#ffffff' : theme.colors.text,
+                  fontWeight: '700'
+                }}>
+                  {level.label}
+                </Text>
+              </View>
+            );
+          })}
         </View>
       </View>
       
