@@ -189,12 +189,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             >
               <LoginCard>
                 {/* Logo no topo */}
-                <View style={{ position: 'absolute', top: 40, alignSelf: 'center' }}>
+                <View style={{ position: 'absolute', top: 60, alignSelf: 'center' }}>
                   <Image
                     source={require('../../assets/pcount-logo.png')}
                     style={{
-                      width: 120,
-                      height: 50,
+                      width: 160,
+                      height: 70,
                       resizeMode: 'contain'
                     }}
                   />
@@ -206,7 +206,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <Text style={{
             fontSize: Math.max(screenWidth * 0.04, 16),
             color: '#ffffff',
-            textAlign: 'left',
+            textAlign: 'center',
             marginBottom: Math.max(screenHeight * 0.025, 20),
             fontWeight: '500',
             opacity: 0.95,
