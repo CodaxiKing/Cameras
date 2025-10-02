@@ -95,8 +95,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (mockFallbackEnabled) {
         console.warn('API de login não disponível, usando autenticação mock:', err);
+        console.log('Tentando login com:', { email, password });
+        console.log('Usuários disponíveis:', users);
         
-        const user = users.find(u => u.email === email && u.password === password);
+        const user = users.find(u => 
+          u.email.toLowerCase() === email.toLowerCase() && 
+          u.password === password
+        );
+        
+        console.log('Usuário encontrado:', user);
         
         if (user) {
           setCurrentUser(user);
@@ -105,6 +112,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.log('Usando contratos mock:', mockContracts);
           setContracts(mockContracts);
           return true;
+        } else {
+          console.log('Credenciais não correspondem aos usuários mock');
         }
       }
       

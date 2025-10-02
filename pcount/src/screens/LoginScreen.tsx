@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Alert, Text, View, TouchableOpacity, Dimensions, KeyboardAvoidingView, ScrollView, Platform, ImageBackground } from 'react-native';
+import { Alert, Text, View, TouchableOpacity, Dimensions, KeyboardAvoidingView, ScrollView, Platform, ImageBackground, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -30,10 +30,9 @@ const CurvedOverlay = styled.View`
 
 const LoginCard = styled.View`
   flex: 1;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: ${screenWidth * 0.06}px;
-  padding-top: ${Math.max(screenHeight * 0.05, 40)}px;
 `;
 
 const LogoContainer = styled.View`
@@ -113,11 +112,10 @@ const LoginButton = styled.TouchableOpacity.attrs({
 `;
 
 const VersionText = styled.Text`
-  color: rgba(0, 0, 0, 0.6);
-  font-size: ${Math.max(screenWidth * 0.032, 12)}px;
-  font-weight: 500;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  font-weight: 400;
   text-align: center;
-  margin-top: ${Math.max(screenHeight * 0.02, 16)}px;
 `;
 
 
@@ -135,16 +133,16 @@ const WelcomeText = styled.Text`
 const BottomActionArea = styled.View`
   width: 100%;
   padding: ${screenWidth * 0.04}px;
-  padding-top: ${Math.max(screenHeight * 0.02, 16)}px;
-  padding-bottom: ${Math.max(screenHeight * 0.03, 20)}px;
+  padding-bottom: ${Math.max(screenHeight * 0.02, 16)}px;
   background-color: transparent;
-  border-top-width: 0px;
-  border-top-color: transparent;
+  position: absolute;
+  bottom: 0;
+  align-items: center;
 `;
 
 const ContentArea = styled.View`
-  flex: 1;
   align-items: center;
+  justify-content: center;
   width: 100%;
 `;
 
@@ -190,67 +188,31 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               showsVerticalScrollIndicator={false}
             >
               <LoginCard>
+                {/* Logo no topo */}
+                <View style={{ position: 'absolute', top: 40, alignSelf: 'center' }}>
+                  <Image
+                    source={require('../../assets/pcount-logo.png')}
+                    style={{
+                      width: 120,
+                      height: 50,
+                      resizeMode: 'contain'
+                    }}
+                  />
+                </View>
+                
                 <ContentArea>
-        {/* Logo Area */}
-        <LogoContainer style={{ marginTop: Math.max(screenHeight * 0.08, 60) }}>
-          <View style={{ alignItems: 'center', marginBottom: Math.max(screenHeight * 0.03, 24) }}>
-            {/* Main PCOUNT Logo */}
-            <View style={{ 
-              flexDirection: 'row', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              marginBottom: 8
-            }}>
-              <Text style={{
-                fontSize: Math.min(screenWidth * 0.12, 48),
-                fontWeight: '800',
-                color: 'rgba(255, 255, 255, 0.95)',
-                letterSpacing: 1,
-                textShadowColor: 'rgba(0, 0, 0, 0.2)',
-                textShadowOffset: { width: 0, height: 2 },
-                textShadowRadius: 4
-              }}>
-                PC
-              </Text>
-              <View style={{
-                width: Math.max(screenWidth * 0.1, 40),
-                height: Math.max(screenWidth * 0.1, 40),
-                borderRadius: Math.max(screenWidth * 0.05, 20),
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginHorizontal: screenWidth * 0.01,
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
-                elevation: 6
-              }}>
-                <MaterialIcons name="visibility" size={Math.max(screenWidth * 0.05, 20)} color="#667eea" />
-              </View>
-              <Text style={{
-                fontSize: Math.min(screenWidth * 0.12, 48),
-                fontWeight: '800',
-                color: 'rgba(255, 255, 255, 0.95)',
-                letterSpacing: 1,
-                textShadowColor: 'rgba(0, 0, 0, 0.2)',
-                textShadowOffset: { width: 0, height: 2 },
-                textShadowRadius: 4
-              }}>
-                UNT
-              </Text>
-            </View>
-          </View>
-        </LogoContainer>
-        
         <FormContainer>
           {/* Form Title */}
           <Text style={{
-            fontSize: Math.max(screenWidth * 0.040, 16),
+            fontSize: Math.max(screenWidth * 0.04, 16),
             color: '#ffffff',
-            textAlign: 'center',
-            marginBottom: Math.max(screenHeight * 0.01, 8),
-            fontWeight: '600',
-            lineHeight: Math.max(screenWidth * 0.050, 20)
+            textAlign: 'left',
+            marginBottom: Math.max(screenHeight * 0.025, 20),
+            fontWeight: '500',
+            opacity: 0.95,
+            letterSpacing: 0.3
           }}>
-            Entre com suas credenciais para{'\n'}acessar o sistema.
+            Bem-vindo ao PCOUNT
           </Text>
           
           {/* Login Form */}
