@@ -50,11 +50,11 @@ const TotalProducedCard: React.FC<{
   // Definir os níveis e cores conforme especificado
   const levels = [
     { threshold: 0, color: '#b91c1c', label: '0' },        // vermelho escuro (até 4800)
-    { threshold: 4800, color: '#c2410c', label: '4800' },   // laranja escuro (4800-6600)
-    { threshold: 6600, color: '#4d7c0f', label: '6600' },   // verde escuro (6600-8400)
-    { threshold: 8400, color: '#16a34a', label: '8400' },   // verde escuro mais claro (8400-10200)
-    { threshold: 10200, color: '#10b981', label: '10200' }, // verde normal mais claro (10200-12000)
-    { threshold: 12000, color: '#34d399', label: '12000' }  // verde mais claro ainda (12000+)
+    { threshold: 4800, color: '#b91c1c', label: '4800' },   // vermelho escuro
+    { threshold: 6600, color: '#c2410c', label: '6600' },   // laranja escuro
+    { threshold: 8400, color: '#4d7c0f', label: '8400' },   // verde escuro
+    { threshold: 10200, color: '#16a34a', label: '10200' }, // verde claro
+    { threshold: 12000, color: '#10b981', label: '12000' }  // verde mais claro
   ];
   
   // Determinar qual cor usar baseado na faixa de valor
@@ -170,7 +170,7 @@ const TotalProducedCard: React.FC<{
                 alignItems: 'center',
                 marginHorizontal: isSmallScreen ? 2 : theme.spacing.xs,
                 marginBottom: theme.spacing.xs,
-                backgroundColor: isActive ? level.color : '#f1f5f9',
+                backgroundColor: level.color,
                 paddingHorizontal: isSmallScreen ? 6 : theme.spacing.sm,
                 paddingVertical: isSmallScreen ? 2 : 4,
                 borderRadius: theme.borderRadius.md,
@@ -178,7 +178,7 @@ const TotalProducedCard: React.FC<{
               }}>
                 <Text style={{
                   fontSize: isSmallScreen ? 10 : theme.fontSizes.xs,
-                  color: isActive ? '#ffffff' : theme.colors.text,
+                  color: '#ffffff',
                   fontWeight: '700'
                 }}>
                   {level.label}
