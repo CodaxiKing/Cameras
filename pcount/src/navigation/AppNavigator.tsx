@@ -89,18 +89,10 @@ export const AppNavigator = () => {
             <Stack.Screen 
               name="LineDetail" 
               component={LineDetailScreen}
-              options={{ 
-                headerShown: true,
-                header: () => <CustomHeader title="Produção de linha" showBackButton={true} />
-              }}
             />
             <Stack.Screen 
               name="ProductionDetail" 
               component={ProductionDetailScreen}
-              options={{ 
-                headerShown: true,
-                header: () => <CustomHeader title="Detalhes da Produção" showBackButton={true} />
-              }}
             />
           </>
         )}

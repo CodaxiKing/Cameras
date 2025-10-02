@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
 import {
   Container,
@@ -13,7 +14,7 @@ interface ProductionDetailScreenProps {
   navigation: any;
 }
 
-export const ProductionDetailScreen: React.FC<ProductionDetailScreenProps> = ({ route }) => {
+export const ProductionDetailScreen: React.FC<ProductionDetailScreenProps> = ({ route, navigation }) => {
   const { production, line } = route.params;
   const { logout } = useAuth();
   
@@ -78,6 +79,42 @@ export const ProductionDetailScreen: React.FC<ProductionDetailScreenProps> = ({ 
   return (
     <Container>
       <AppHeader onLogout={handleLogout} />
+      
+      {/* Botão de Voltar Flutuante */}
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          position: 'absolute',
+          top: 60,
+          left: 16,
+          zIndex: 1000,
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: 12,
+          paddingHorizontal: 16,
+          paddingVertical: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 8,
+          elevation: 8,
+          borderWidth: 1,
+          borderColor: 'rgba(102, 126, 234, 0.3)',
+        }}
+        activeOpacity={0.7}
+      >
+        <MaterialIcons name="arrow-back" size={20} color="#667eea" />
+        <Text style={{
+          marginLeft: 8,
+          fontSize: 15,
+          fontWeight: '600',
+          color: '#667eea'
+        }}>
+          Voltar
+        </Text>
+      </TouchableOpacity>
+      
       <ScrollView style={{ padding: 16 }}>
         <Card style={{ marginBottom: 16 }}>
           <View style={{ marginBottom: 12 }}>
