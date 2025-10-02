@@ -53,7 +53,8 @@ const TotalProducedCard: React.FC<{
     { threshold: 4800, color: '#c2410c', label: '4800' },   // laranja escuro (4800-6600)
     { threshold: 6600, color: '#4d7c0f', label: '6600' },   // verde escuro (6600-8400)
     { threshold: 8400, color: '#16a34a', label: '8400' },   // verde escuro mais claro (8400-10200)
-    { threshold: 10200, color: '#10b981', label: '10200' }  // verde normal mais claro (10200+)
+    { threshold: 10200, color: '#10b981', label: '10200' }, // verde normal mais claro (10200-12000)
+    { threshold: 12000, color: '#34d399', label: '12000' }  // verde mais claro ainda (12000+)
   ];
   
   // Determinar qual cor usar baseado na faixa de valor
@@ -62,7 +63,8 @@ const TotalProducedCard: React.FC<{
     if (safeValue < 6600) return levels[1].color;
     if (safeValue < 8400) return levels[2].color;
     if (safeValue < 10200) return levels[3].color;
-    return levels[4].color;
+    if (safeValue < 12000) return levels[4].color;
+    return levels[5].color;
   };
   
   const currentColor = getCurrentColor();
