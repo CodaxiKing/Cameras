@@ -262,7 +262,7 @@ const StatCard: React.FC<{
         </Text>
         <View style={{
           backgroundColor: accentColor,
-          borderRadius: theme.borderRadius.sm,
+          borderRadius: iconSize / 2,
           width: iconSize,
           height: iconSize,
           justifyContent: 'center',
@@ -302,6 +302,8 @@ const StatCard: React.FC<{
 // Componente de gráfico de barras modernizado para mobile
 const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ data }) => {
   const { width: screenWidth } = useWindowDimensions();
+  const [selectedBarIndex, setSelectedBarIndex] = useState<number | null>(null);
+  
   if (!data || data.length === 0) {
     return (
       <View style={{ 
@@ -309,7 +311,7 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
         marginVertical: theme.spacing.lg, 
         height: 160, 
         justifyContent: 'center',
-        backgroundColor: '#f8fafc',
+        backgroundColor: '#ffffff',
         borderRadius: theme.borderRadius.xl,
         padding: theme.spacing.lg,
         borderWidth: 1,
@@ -333,84 +335,88 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
   const baseChartWidth = Math.min(screenWidth - 40, 480);
   const chartHeight = 140;
   const maxValue = Math.max(...data.map(d => d.value), 1);
-  const padding = { top: 20, right: 16, bottom: 30, left: 16 };
+  const padding = { top: 20, right: 16, bottom: 30, left: 40 };
   
   // Calcular largura das barras para evitar overflow
   const availableWidth = baseChartWidth - padding.left - padding.right;
   const barGroupWidth = availableWidth / data.length;
-  const actualBarWidth = Math.min(barGroupWidth * 0.7, 28); // Máximo 28px por barra
-  const showLabels = barGroupWidth >= 14; // Só mostrar labels se houver espaço
+  const actualBarWidth = Math.min(barGroupWidth * 0.7, 28);
+  const showLabels = barGroupWidth >= 14;
+  
+  // Calcular escala do eixo Y (múltiplos de 20)
+  const yAxisMax = Math.ceil(maxValue / 20) * 20 || 60;
+  const yAxisSteps = [0, 20, 40, 60].filter(v => v <= yAxisMax);
+  if (yAxisMax > 60) yAxisSteps.push(yAxisMax);
 
   return (
     <View style={{ marginVertical: theme.spacing.md, alignItems: 'center' }}>
       <View style={{ alignItems: 'center' }}>
         <Svg width={baseChartWidth} height={chartHeight + padding.top + padding.bottom}>
-          {/* Background sutil */}
-          <Rect
-            x={0}
-            y={0}
-            width={baseChartWidth}
-            height={chartHeight + padding.top + padding.bottom}
-            fill="#fafbfc"
-            rx={8}
-          />
+          {/* Background branco limpo - SEM fundo */}
           
-          {/* Grid lines horizontais sutis */}
-          {[1, 2, 3].map((i) => {
-            const y = padding.top + (i * chartHeight) / 4;
+          {/* Grid lines horizontais PONTILHADAS */}
+          {yAxisSteps.slice(1).map((value, i) => {
+            const y = padding.top + chartHeight - ((value / yAxisMax) * chartHeight);
             return (
               <Line
-                key={i}
+                key={value}
                 x1={padding.left}
                 y1={y}
                 x2={baseChartWidth - padding.right}
                 y2={y}
-                stroke="#e5e7eb"
-                strokeWidth={0.5}
-                opacity={0.7}
+                stroke="#d1d5db"
+                strokeWidth={1}
+                strokeDasharray="4,4"
+                opacity={0.5}
               />
             );
           })}
+          
+          {/* Labels do eixo Y */}
+          {yAxisSteps.map((value) => {
+            const y = padding.top + chartHeight - ((value / yAxisMax) * chartHeight);
+            return (
+              <SvgText
+                key={value}
+                x={padding.left - 8}
+                y={y + 4}
+                fontSize="10"
+                fill={theme.colors.textSecondary}
+                textAnchor="end"
+                fontWeight="500"
+              >
+                {value}
+              </SvgText>
+            );
+          })}
 
-          {/* Barras com gradiente e estilo moderno */}
+          {/* Barras com estilo limpo */}
           {data.map((item, index) => {
-            const barHeight = Math.max((item.value / maxValue) * chartHeight, 4);
+            const barHeight = Math.max((item.value / yAxisMax) * chartHeight, 4);
             const x = padding.left + index * barGroupWidth + (barGroupWidth - actualBarWidth) / 2;
             const y = padding.top + chartHeight - barHeight;
+            const isSelected = selectedBarIndex === index;
             
             return (
               <G key={index}>
-                {/* Barra principal */}
+                {/* Barra principal - com interatividade */}
                 <Rect
                   x={x}
                   y={y}
                   width={actualBarWidth}
                   height={barHeight}
-                  fill="#3b82f6"
-                  rx={Math.min(actualBarWidth / 8, 4)}
-                  ry={Math.min(actualBarWidth / 8, 4)}
+                  fill={isSelected ? "#2563eb" : "#3b82f6"}
+                  rx={2}
+                  ry={2}
+                  onPress={() => setSelectedBarIndex(isSelected ? null : index)}
                 />
                 
-                {/* Efeito de gradiente/highlight */}
-                {actualBarWidth >= 8 && (
-                  <Rect
-                    x={x + 2}
-                    y={y}
-                    width={actualBarWidth - 4}
-                    height={Math.max(barHeight * 0.3, 2)}
-                    fill="#60a5fa"
-                    rx={2}
-                    ry={2}
-                    opacity={0.8}
-                  />
-                )}
-                
-                {/* Valor em cima da barra (apenas se houver espaço) */}
-                {barHeight > 20 && showLabels && item.value > 0 && (
+                {/* Valor em cima da barra - APENAS SE CLICADO */}
+                {isSelected && item.value > 0 && (
                   <SvgText
                     x={x + actualBarWidth / 2}
                     y={y - 6}
-                    fontSize="9"
+                    fontSize="12"
                     fill={theme.colors.text}
                     textAnchor="middle"
                     fontWeight="700"
@@ -427,7 +433,7 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
                     fontSize="9"
                     fill={theme.colors.textSecondary}
                     textAnchor="middle"
-                    fontWeight="600"
+                    fontWeight="500"
                   >
                     {item.hour.split(':')[0]}h
                   </SvgText>
@@ -436,29 +442,40 @@ const BarChart: React.FC<{ data: Array<{ hour: string; value: number }> }> = ({ 
             );
           })}
 
-          {/* Linha base sutil */}
+          {/* Linha base PONTILHADA AZUL */}
           <Line
             x1={padding.left}
             y1={padding.top + chartHeight}
             x2={baseChartWidth - padding.right}
             y2={padding.top + chartHeight}
-            stroke="#d1d5db"
+            stroke="#3b82f6"
             strokeWidth={1.5}
+            strokeDasharray="5,5"
             strokeLinecap="round"
           />
         </Svg>
       </View>
       
-      {/* Valor máximo para referência */}
+      {/* Textos informativos abaixo do gráfico */}
       {maxValue > 0 && (
-        <Text style={{
-          fontSize: theme.fontSizes.xs,
-          color: theme.colors.textSecondary,
-          marginTop: theme.spacing.sm,
-          textAlign: 'center'
-        }}>
-          Máximo: {maxValue} unidades
-        </Text>
+        <View style={{ marginTop: theme.spacing.md, alignItems: 'center' }}>
+          <Text style={{
+            fontSize: theme.fontSizes.xs,
+            color: theme.colors.textSecondary,
+            fontWeight: '600',
+            textAlign: 'center'
+          }}>
+            Máximo: {maxValue} unidades
+          </Text>
+          <Text style={{
+            fontSize: theme.fontSizes.xs,
+            color: theme.colors.textSecondary,
+            marginTop: 4,
+            textAlign: 'center'
+          }}>
+            Unidades produzidas por horário de trabalho
+          </Text>
+        </View>
       )}
     </View>
   );
