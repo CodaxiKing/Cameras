@@ -23,7 +23,7 @@ const MainTabs = () => {
       screenOptions={{
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.textSecondary,
-        header: () => <CustomHeader />,
+        headerShown: false,
       }}
     >
       <Tab.Screen 
@@ -34,7 +34,6 @@ const MainTabs = () => {
           tabBarIcon: ({ color, size }) => (
             <Icon name="dashboard" size={size} color={color} />
           ),
-          headerShown: false,
         }}
       />
       <Tab.Screen 
@@ -68,33 +67,30 @@ export const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator 
         screenOptions={{ 
-          headerShown: true,
-          header: () => <CustomHeader />,
+          headerShown: false,
         }}
       >
         {!isAuthenticated ? (
           <Stack.Screen 
             name="Login" 
             component={LoginScreen}
-            options={{ headerShown: false }}
           />
         ) : !selectedContract ? (
           <Stack.Screen 
             name="ContractScreen" 
             component={ContractScreen}
-            options={{ headerShown: false }}
           />
         ) : (
           <>
             <Stack.Screen 
               name="MainTabs" 
               component={MainTabs}
-              options={{ headerShown: false }}
             />
             <Stack.Screen 
               name="LineDetail" 
               component={LineDetailScreen}
               options={{ 
+                headerShown: true,
                 header: () => <CustomHeader title="Produção de linha" showBackButton={true} />
               }}
             />
@@ -102,6 +98,7 @@ export const AppNavigator = () => {
               name="ProductionDetail" 
               component={ProductionDetailScreen}
               options={{ 
+                headerShown: true,
                 header: () => <CustomHeader title="Detalhes da Produção" showBackButton={true} />
               }}
             />
