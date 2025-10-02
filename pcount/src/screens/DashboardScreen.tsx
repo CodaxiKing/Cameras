@@ -50,21 +50,21 @@ const TotalProducedCard: React.FC<{
   // Definir os níveis e cores conforme especificado
   const levels = [
     { threshold: 0, color: '#b91c1c', label: '0' },        // vermelho escuro (até 4800)
-    { threshold: 4800, color: '#b91c1c', label: '4800' },   // vermelho escuro
-    { threshold: 6600, color: '#c2410c', label: '6600' },   // laranja escuro
-    { threshold: 8400, color: '#4d7c0f', label: '8400' },   // verde escuro
-    { threshold: 10200, color: '#16a34a', label: '10200' }, // verde claro
-    { threshold: 12000, color: '#10b981', label: '12000' }  // verde mais claro
+    { threshold: 4800, color: '#c2410c', label: '4800' },   // laranja escuro (4800-6600)
+    { threshold: 6600, color: '#4d7c0f', label: '6600' },   // verde escuro (6600-8400)
+    { threshold: 8400, color: '#16a34a', label: '8400' },   // verde claro (8400-10200)
+    { threshold: 10200, color: '#10b981', label: '10200' }, // verde mais claro (10200-12000)
+    { threshold: 12000, color: '#10b981', label: '12000' }  // verde mais claro (12000+)
   ];
   
   // Determinar qual cor usar baseado na faixa de valor
   const getCurrentColor = () => {
-    if (safeValue < 4800) return levels[0].color;
-    if (safeValue < 6600) return levels[1].color;
-    if (safeValue < 8400) return levels[2].color;
-    if (safeValue < 10200) return levels[3].color;
-    if (safeValue < 12000) return levels[4].color;
-    return levels[5].color;
+    if (safeValue < 4800) return '#b91c1c';      // Vermelho escuro
+    if (safeValue < 6600) return '#c2410c';      // Laranja escuro
+    if (safeValue < 8400) return '#4d7c0f';      // Verde escuro
+    if (safeValue < 10200) return '#16a34a';     // Verde claro
+    if (safeValue < 12000) return '#10b981';     // Verde mais claro
+    return '#10b981';                             // Verde mais claro (12000+)
   };
   
   const currentColor = getCurrentColor();
@@ -763,7 +763,6 @@ const DateSelector: React.FC<{
           paddingVertical: theme.spacing.md,
           borderRadius: 20,
           marginBottom: theme.spacing.md,
-          alignSelf: 'flex-start',
           borderWidth: 1,
           borderColor: '#e2e8f0',
           shadowColor: '#64748b',
@@ -772,8 +771,7 @@ const DateSelector: React.FC<{
           shadowRadius: 8,
           elevation: 4,
           flexDirection: 'row',
-          alignItems: 'center',
-          minWidth: 240
+          alignItems: 'center'
         }}
       >
         <View style={{
