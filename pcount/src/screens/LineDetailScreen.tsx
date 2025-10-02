@@ -6,6 +6,7 @@ import {
   Container,
   Card,
 } from '../components/StyledComponents';
+import { AppHeader } from '../components/AppHeader';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { theme } from '../theme';
@@ -17,7 +18,11 @@ interface LineDetailScreenProps {
 
 export const LineDetailScreen: React.FC<LineDetailScreenProps> = ({ route, navigation }) => {
   const { line } = route.params;
-  const { selectedContract } = useAuth();
+  const { selectedContract, logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+  };
   
   // Buscar produções usando o contrato selecionado e filtrar por linha
   // Hook fará no-op se contratoId for falsy
@@ -29,10 +34,13 @@ export const LineDetailScreen: React.FC<LineDetailScreenProps> = ({ route, navig
   // Verificar se um contrato foi selecionado
   if (!selectedContract) {
     return (
-      <Container style={{ padding: 16 }}>
-        <ErrorMessage 
-          message="Nenhum contrato selecionado. Por favor, faça login novamente."
-        />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <ErrorMessage 
+            message="Nenhum contrato selecionado. Por favor, faça login novamente."
+          />
+        </View>
       </Container>
     );
   }
@@ -40,8 +48,11 @@ export const LineDetailScreen: React.FC<LineDetailScreenProps> = ({ route, navig
   // Mostrar loading
   if (loading) {
     return (
-      <Container style={{ padding: 16 }}>
-        <LoadingSpinner />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <LoadingSpinner />
+        </View>
       </Container>
     );
   }
@@ -49,8 +60,11 @@ export const LineDetailScreen: React.FC<LineDetailScreenProps> = ({ route, navig
   // Mostrar erro
   if (error) {
     return (
-      <Container style={{ padding: 16 }}>
-        <ErrorMessage message={error} />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <ErrorMessage message={error} />
+        </View>
       </Container>
     );
   }
@@ -125,6 +139,7 @@ export const LineDetailScreen: React.FC<LineDetailScreenProps> = ({ route, navig
 
   return (
     <Container>
+      <AppHeader onLogout={handleLogout} />
       <ScrollView style={{ padding: 16 }}>
         {/* Produção Ativa */}
         {activeProductions.length > 0 && (

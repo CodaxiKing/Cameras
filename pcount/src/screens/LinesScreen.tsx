@@ -9,6 +9,7 @@ import {
   Card,
   StatusIndicator,
 } from '../components/StyledComponents';
+import { AppHeader } from '../components/AppHeader';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { theme } from '../theme';
@@ -18,7 +19,11 @@ interface LinesScreenProps {
 }
 
 export const LinesScreen: React.FC<LinesScreenProps> = ({ navigation }) => {
-  const { selectedContract } = useAuth();
+  const { selectedContract, logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+  };
   
   // Buscar as linhas de produção com fallback automático para mock
   const { data: productionLines, loading, error } = useProductionLinesWithFallback(
@@ -37,10 +42,13 @@ export const LinesScreen: React.FC<LinesScreenProps> = ({ navigation }) => {
   // Verificar se um contrato foi selecionado
   if (!selectedContract) {
     return (
-      <Container style={{ padding: 16 }}>
-        <ErrorMessage 
-          message="Nenhum contrato selecionado. Por favor, faça login novamente."
-        />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <ErrorMessage 
+            message="Nenhum contrato selecionado. Por favor, faça login novamente."
+          />
+        </View>
       </Container>
     );
   }
@@ -48,9 +56,12 @@ export const LinesScreen: React.FC<LinesScreenProps> = ({ navigation }) => {
   // Mostrar loading
   if (loading) {
     return (
-      <Container style={{ padding: 16 }}>
-        <Title>Carregando Linhas...</Title>
-        <LoadingSpinner />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <Title>Carregando Linhas...</Title>
+          <LoadingSpinner />
+        </View>
       </Container>
     );
   }
@@ -58,9 +69,12 @@ export const LinesScreen: React.FC<LinesScreenProps> = ({ navigation }) => {
   // Mostrar erro apenas se não houver dados (fallback pode resolver automaticamente)
   if (error && !productionLines) {
     return (
-      <Container style={{ padding: 16 }}>
-        <Title>Selecione uma Linha</Title>
-        <ErrorMessage message={error} />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <Title>Selecione uma Linha</Title>
+          <ErrorMessage message={error} />
+        </View>
       </Container>
     );
   }
@@ -68,18 +82,23 @@ export const LinesScreen: React.FC<LinesScreenProps> = ({ navigation }) => {
   // Verificar se existem linhas
   if (!productionLines || productionLines.length === 0) {
     return (
-      <Container style={{ padding: 16 }}>
-        <Title>Selecione uma Linha</Title>
-        <Text style={{ textAlign: 'center', marginTop: 32, color: theme.colors.textSecondary }}>
-          Nenhuma linha de produção encontrada para este contrato.
-        </Text>
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <Title>Selecione uma Linha</Title>
+          <Text style={{ textAlign: 'center', marginTop: 32, color: theme.colors.textSecondary }}>
+            Nenhuma linha de produção encontrada para este contrato.
+          </Text>
+        </View>
       </Container>
     );
   }
 
   return (
-    <Container style={{ padding: 16 }}>
-      <Title>Selecione uma Linha</Title>
+    <Container>
+      <AppHeader onLogout={handleLogout} />
+      <View style={{ padding: 16, flex: 1 }}>
+        <Title>Selecione uma Linha</Title>
       
       <View style={{ flexDirection: 'row', marginBottom: 16, alignItems: 'center' }}>
         <StatusIndicator status="iniciando" />
@@ -221,6 +240,7 @@ export const LinesScreen: React.FC<LinesScreenProps> = ({ navigation }) => {
           </Card>
         )}
       />
+      </View>
     </Container>
   );
 };

@@ -1,10 +1,27 @@
 import styled from 'styled-components/native';
+import React from 'react';
+import { SafeAreaView, ImageBackground, ViewStyle } from 'react-native';
 import { theme } from '../theme';
 
-export const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${theme.colors.background};
-`;
+interface ContainerProps {
+  children?: React.ReactNode;
+  style?: ViewStyle | ViewStyle[];
+  [key: string]: any;
+}
+
+export const Container: React.FC<ContainerProps> = ({ children, style, ...rest }) => {
+  return (
+    <ImageBackground
+      source={require('../../assets/background.png')}
+      style={{ flex: 1 }}
+      resizeMode="cover"
+    >
+      <SafeAreaView style={[{ flex: 1 }, style]} {...rest}>
+        {children}
+      </SafeAreaView>
+    </ImageBackground>
+  );
+};
 
 export const CenteredContainer = styled.View`
   flex: 1;

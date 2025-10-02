@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useAuth } from '../contexts/AuthContext';
+import { AppHeader } from '../components/AppHeader';
 import {
   Container,
   CenteredContainer,
@@ -10,8 +12,15 @@ import {
 import { theme } from '../theme';
 
 export const ProductionScreen: React.FC = () => {
+  const { logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+  };
+  
   return (
     <Container>
+      <AppHeader onLogout={handleLogout} />
       <CenteredContainer>
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 24, marginBottom: 16 }}>📷</Text>

@@ -1,9 +1,11 @@
 import React from 'react';
 import { ScrollView, View, Text } from 'react-native';
+import { useAuth } from '../contexts/AuthContext';
 import {
   Container,
   Card,
 } from '../components/StyledComponents';
+import { AppHeader } from '../components/AppHeader';
 import { theme } from '../theme';
 
 interface ProductionDetailScreenProps {
@@ -13,6 +15,11 @@ interface ProductionDetailScreenProps {
 
 export const ProductionDetailScreen: React.FC<ProductionDetailScreenProps> = ({ route }) => {
   const { production, line } = route.params;
+  const { logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+  };
 
   // Função para formatar datas corretamente
   const formatDate = (dateStr: string) => {
@@ -70,6 +77,7 @@ export const ProductionDetailScreen: React.FC<ProductionDetailScreenProps> = ({ 
 
   return (
     <Container>
+      <AppHeader onLogout={handleLogout} />
       <ScrollView style={{ padding: 16 }}>
         <Card style={{ marginBottom: 16 }}>
           <View style={{ marginBottom: 12 }}>

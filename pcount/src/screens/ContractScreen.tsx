@@ -1,9 +1,10 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { Contract } from '../types';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
+import { AppHeader } from '../components/AppHeader';
 import {
   Container,
   Title,
@@ -16,7 +17,11 @@ interface ContractScreenProps {
 }
 
 export const ContractScreen: React.FC<ContractScreenProps> = ({ navigation }) => {
-  const { selectContract, contracts, loading, error, loadContracts } = useAuth();
+  const { selectContract, contracts, loading, error, loadContracts, logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+  };
 
   const handleContractSelect = (contract: Contract) => {
     selectContract(contract);
@@ -25,34 +30,49 @@ export const ContractScreen: React.FC<ContractScreenProps> = ({ navigation }) =>
 
   // Mostra loading spinner enquanto carrega
   if (loading) {
-    return <LoadingSpinner message="Carregando contratos..." />;
+    return (
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <LoadingSpinner message="Carregando contratos..." />
+        </View>
+      </Container>
+    );
   }
 
   // Mostra erro se houver
   if (error) {
     return (
-      <ErrorMessage 
-        message={error} 
-        onRetry={loadContracts}
-        retryText="Tentar novamente"
-      />
+      <Container>
+        <AppHeader onLogout={handleLogout} />
+        <View style={{ padding: 16, flex: 1 }}>
+          <ErrorMessage 
+            message={error} 
+            onRetry={loadContracts}
+            retryText="Tentar novamente"
+          />
+        </View>
+      </Container>
     );
   }
 
   return (
-    <Container style={{ padding: 16 }}>
-      <Title>Selecione o Contrato</Title>
-      
-      <FlatList
-        data={contracts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Card onPress={() => handleContractSelect(item)}>
-            <ButtonText variant="secondary">{item.name}</ButtonText>
-          </Card>
-        )}
-        showsVerticalScrollIndicator={false}
-      />
+    <Container>
+      <AppHeader onLogout={handleLogout} />
+      <View style={{ padding: 16, flex: 1 }}>
+        <Title>Selecione o Contrato</Title>
+        
+        <FlatList
+          data={contracts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Card onPress={() => handleContractSelect(item)}>
+              <ButtonText variant="secondary">{item.name}</ButtonText>
+            </Card>
+          )}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </Container>
   );
 };
